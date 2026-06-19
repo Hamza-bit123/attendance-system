@@ -1,0 +1,366 @@
+/* ማስተር ዲዛይን ቶክን አሬይ */
+:root {
+    --bg-main: #0b131f;
+    --bg-card: #152238;
+    --sidebar-color: #0a0f18;
+    --sidebar-text-muted: #64748b;
+    --primary: #10b981;
+    --primary-light: rgba(16, 185, 129, 0.12);
+    --primary-glow: rgba(16, 185, 129, 0.3);
+    --accent: #3b82f6;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --table-header-bg: #0f172a;
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.15);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.15);
+    --sidebar-width: 280px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --font: 'Noto Ethiopic', 'Plus Jakarta Sans', sans-serif;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body.light-mode {
+    --bg-main: #f1f5f9;
+    --bg-card: #ffffff;
+    --sidebar-color: #ffffff;
+    --sidebar-text-muted: #64748b;
+    --primary: #10b981;
+    --primary-light: rgba(16, 185, 129, 0.08);
+    --primary-glow: rgba(16, 185, 129, 0.18);
+    --accent: #2563eb;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    --table-header-bg: #f8fafc;
+    --danger-bg: rgba(239, 68, 68, 0.08);
+    --warning-bg: rgba(245, 158, 11, 0.08);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-font-smoothing: antialiased; }
+body { background-color: var(--bg-main); color: var(--text-main); font-size: 14px; min-height: 100vh; display: flex; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
+
+/* መዋቅራዊ አቀማመጥ */
+.app-container { display: flex; width: 100%; min-height: 100vh; }
+
+/* የጎን አሞሌ (Sidebar) */
+.sidebar {
+    background: var(--sidebar-color); width: var(--sidebar-width); position: fixed; top: 0; bottom: 0; left: calc(-1 * var(--sidebar-width));
+    z-index: 1000; display: flex; flex-direction: column; transition: var(--transition); border-right: 1px solid var(--border-color);
+}
+.sidebar.active { left: 0; }
+.sidebar-header { padding: 30px 24px 20px 24px; border-bottom: 1px solid var(--border-color); }
+.sidebar-brand-text { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: 0.5px; }
+.sidebar-brand-sub { font-size: 11px; color: var(--primary); margin-top: 2px; font-weight: 600; text-transform: uppercase; }
+.sidebar-menu { list-style: none; padding: 15px 16px; flex: 1; overflow-y: auto; }
+.sidebar-item {
+    padding: 12px 16px; display: flex; align-items: center; gap: 12px; color: var(--sidebar-text-muted); text-decoration: none;
+    cursor: pointer; transition: var(--transition); border-radius: var(--radius-md); margin-bottom: 6px; font-size: 13.5px;
+}
+.sidebar-item:hover { color: var(--text-main); background: rgba(120, 120, 120, 0.08); }
+.sidebar-item.active { color: #ffffff; background: var(--primary); font-weight: 600; box-shadow: 0 4px 12px var(--primary-glow); }
+
+body.light-mode .sidebar-item.active { color: #ffffff !important; }
+
+.sidebar-footer { padding: 20px; border-top: 1px solid var(--border-color); }
+
+/* SVG Icons */
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.2;
+    stroke: currentColor;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+/* ዋና ይዘት ማሳያ */
+.main-content { flex: 1; padding: 16px; padding-top: 80px; width: 100%; min-width: 0; transition: var(--transition); }
+.app-view { display: none; animation: viewFadeIn 0.25s ease-out; }
+.app-view.active { display: block; }
+@keyframes viewFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+h2 { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; }
+.card { background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: var(--shadow); }
+
+/* የዳሽቦርድ ካርዶች */
+.dash-cards-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 18px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+.stat-card.variant-1::before { background: var(--primary); }
+.stat-card.variant-2::before { background: var(--warning); }
+.stat-card.variant-3::before { background: var(--danger); }
+.stat-card.variant-4::before { background: #a855f7; }
+.stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--text-main); margin-top: 4px; display: block; }
+
+/* የዳሽቦርድ ግራፍ እና ዝርዝር መዋቅር */
+.dash-layout-split { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.graph-container { display: flex; flex-direction: column; justify-content: flex-end; height: 260px; padding-top: 20px; margin-top: 15px; }
+.bar-chart-row { display: flex; align-items: flex-end; height: 100%; gap: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; }
+.bar-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 8px; }
+.bar-fill { width: 100%; max-width: 40px; background: linear-gradient(180deg, var(--accent) 0%, rgba(59,130,246,0.4) 100%); border-top-left-radius: 6px; border-top-right-radius: 6px; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+.bar-fill:hover { background: var(--primary); }
+.bar-value { font-size: 11px; font-weight: 700; position: absolute; top: -20px; width: 100%; text-align: center; }
+.bar-label { font-size: 11px; color: var(--text-muted); font-weight: 500; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+
+/* ፎርሞች እና ኮንትሮሎች */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; }
+.form-control { width: 100%; padding: 11px 14px; background: var(--table-header-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 14px; color: var(--text-main); transition: var(--transition); }
+.form-control:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-glow); }
+
+.btn { padding: 11px 18px; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 13.5px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); text-decoration: none; }
+.btn-primary { background: var(--primary); color: #ffffff; }
+.btn-primary:hover { opacity: 0.95; transform: translateY(-0.5px); }
+.btn-secondary { background: var(--table-header-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+.btn-secondary:hover { background: rgba(120, 120, 120, 0.08); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { opacity: 0.9; }
+
+/* ሰንጠረዦች (Tables) */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); }
+.table-responsive::-webkit-scrollbar { height: 6px; }
+.table-responsive::-webkit-scrollbar-track { background: transparent; }
+.table-responsive::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 99px; }
+.table-responsive::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+.app-table { width: 100%; border-collapse: collapse; text-align: center; white-space: nowrap; }
+.app-table th, .app-table td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); font-size: 13.5px; }
+.app-table th { background-color: var(--table-header-bg); color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.app-table tr:last-child td { border-bottom: none; }
+.app-table td:first-child, .app-table th:first-child { text-align: left; }
+
+/* አክሽን ድሮፕዳውን (More Actions) */
+.action-cell { position: relative; }
+.dots-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-muted); padding: 4px 10px; border-radius: 6px; }
+.dots-btn:hover { background: rgba(120,120,120,0.08); color: var(--text-main); }
+.dropdown-menu { display: none; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); z-index: 100; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+.dropdown-menu.show { display: block; }
+.dropdown-item { padding: 10px 14px; text-align: left; cursor: pointer; font-size: 13px; display: block; width: 100%; border: none; background: none; color: var(--text-main); transition: var(--transition); }
+.dropdown-item:hover { background-color: rgba(120,120,120,0.08); }
+
+/* የመገኘት ሉህ ማትሪክስ (Overhauled Premium Matrix UI) */
+.attendance-matrix th, .attendance-matrix td { padding: 8px 6px; border: 1px solid var(--border-color); font-size: 12px; }
+.attendance-matrix th:first-child, .attendance-matrix td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--bg-card);
+    z-index: 6;
+    border-right: 1px solid var(--border-color);
+    min-width: 45px;
+    max-width: 45px;
+    width: 45px;
+    text-align: center !important;
+}
+.attendance-matrix th:nth-child(2), .attendance-matrix td:nth-child(2) {
+    position: sticky;
+    left: 44px; /* closed subpixel rendering scrolling gaps by overlapping 1px */
+    background: var(--bg-card);
+    z-index: 5;
+    border-right: 2px solid var(--border-color);
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.05);
+    text-align: left !important;
+    min-width: 110px;
+    max-width: 110px;
+    width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.attendance-matrix th:first-child { background: var(--table-header-bg); }
+.attendance-matrix th:nth-child(2) { background: var(--table-header-bg); }
+
+/* Current day column highlighters */
+.attendance-matrix th.current-day-col {
+    border-bottom: 2px solid var(--accent) !important;
+}
+.attendance-matrix th.current-day-col .day-header-circle {
+    background: var(--accent) !important;
+    color: white !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+.attendance-matrix td.current-day-col {
+    background: rgba(59, 130, 246, 0.06) !important;
+    border-left: 1px dashed var(--accent) !important;
+    border-right: 1px dashed var(--accent) !important;
+}
+
+/* Stacked day name structures */
+.day-header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 36px;
+}
+.day-name {
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.day-header-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--table-header-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+.attendance-bubble {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+    margin: 0 auto;
+}
+.attendance-bubble.state-present {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1.5px solid rgba(16, 185, 129, 0.4);
+}
+.attendance-bubble.state-absent {
+    background-color: var(--danger);
+    color: #ffffff;
+    border: 1.5px solid var(--danger);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+}
+.attendance-bubble.state-permission {
+    background-color: var(--warning);
+    color: #ffffff;
+    border: 1.5px solid var(--warning);
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25);
+}
+.attendance-bubble.state-future {
+    background-color: transparent !important;
+    color: var(--border-color) !important;
+    border: 1.5px dashed var(--border-color) !important;
+    cursor: not-allowed !important;
+    opacity: 0.35 !important;
+    box-shadow: none !important;
+}
+.attendance-bubble.state-future:hover {
+    transform: none !important;
+}
+.attendance-bubble.state-empty {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+.attendance-bubble:hover {
+    transform: scale(1.1);
+}
+
+.current-month-indicator { border: 2px dashed var(--accent) !important; background: rgba(59,130,246,0.05); }
+
+/* የመገኘት ማሳያ Legend */
+.attendance-legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; margin-top: 10px; margin-bottom: 5px; }
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.legend-dot.present { background: var(--primary-light); border: 1.5px solid var(--primary); }
+.legend-dot.absent { background: var(--danger); }
+.legend-dot.permission { background: var(--warning); }
+
+/* ባች ምዝገባ ሄደር ኮንትሮል */
+.batch-control-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--bg-card); padding: 12px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+.batch-badge { background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+
+/* ሞባይል ሄደር */
+.mobile-header { display: flex; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--sidebar-color); border-bottom: 1px solid var(--border-color); z-index: 900; align-items: center; padding: 0 16px; justify-content: space-between; box-shadow: var(--shadow); }
+.menu-toggle { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; padding: 6px; display: flex; align-items: center; }
+.mobile-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+.sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 950; }
+.sidebar-overlay.active { display: block; }
+
+.theme-toggle-header {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+}
+
+/* ሲስተም ማስጠንቀቂያ መልዕክት */
+.alert-card { background: var(--warning-bg); border: 1px dashed var(--warning); border-radius: var(--radius-lg); padding: 24px; text-align: center; }
+.alert-card p { font-size: 15px; margin-bottom: 16px; font-weight: 500; color: var(--text-main); }
+
+/* የPDF ኤክስፖርት ስታይል */
+.pdf-page-wrapper {
+    background: white !important;
+    color: black !important;
+    padding: 8mm 10mm !important;
+    width: 297mm;
+    height: 209mm; /* Fix the height to exactly 209mm to eliminate extra blank pages */
+    box-sizing: border-box;
+    page-break-after: always;
+    margin-bottom: 25px; /* Space between pages in preview */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Premium paper shadow */
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.pdf-page-wrapper h1 { font-size: 17px; color: #1e293b; text-align: center; margin-bottom: 4px; font-family: var(--font); }
+.pdf-page-wrapper h3 { font-size: 11.5px; color: #64748b; text-align: center; margin-bottom: 8px; font-family: var(--font); }
+.pdf-table { width: 100%; border-collapse: collapse; font-family: var(--font); }
+.pdf-table th, .pdf-table td { border: 1px solid #94a3b8 !important; padding: 3px 2px !important; text-align: center; font-size: 9.5px !important; color: black !important; }
+.pdf-table th { background: #f1f5f9 !important; font-weight: bold; }
+.pdf-table td:first-child { text-align: center; font-weight: bold; }
+.pdf-table td:nth-child(2) { text-align: left; font-weight: bold; padding-left: 6px !important; }
+
+/* ዴስክቶፕ መዋቅር ማስተካከያ */
+@media (min-width: 992px) {
+    .sidebar { left: 0; }
+    .main-content { margin-left: var(--sidebar-width); padding: 30px; padding-top: 30px; max-width: calc(100vw - var(--sidebar-width)); }
+    .mobile-header { display: none; }
+    .dash-cards-grid { grid-template-columns: repeat(4, 1fr); }
+    .dash-layout-split { grid-template-columns: 2fr 1fr; }
+}
+
+/* Sticky Filter Head */
+.sticky-filter-head {
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-main);
+    z-index: 100;
+    padding-top: 10px;
+    margin-top: -10px;
+    padding-bottom: 8px;
+}
+@media (max-width: 991px) {
+    .sticky-filter-head {
+        top: 60px; /* aligns under the mobile header */
+    }
+}
+
+.pdf-exporting .pdf-page-wrapper {
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
