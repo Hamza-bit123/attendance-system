@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="am" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ኢብኑ ዑመር መድረሳ - የተማሪዎች መገኘት መቆጣጠሪያ</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Ethiopic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Ethiopic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <div class="mobile-header">
         <button class="menu-toggle" id="menuToggle">☰</button>
-        <div class="mobile-title">ኢብኑ ዑመር መድረሳ</div>
+        <div class="mobile-brand-wrapper" id="mobileBrandHome">
+            <img class="brand-logo"
+                src="assets/images/Ibnu Oumer Qur’an Memorization Medresa مدرسة ابن عمر لتحفيظ القرآن الكريم.png"
+                alt="Medresa Logo">
+            <div class="mobile-title">ኢብኑ ዑመር መድረሳ</div>
+        </div>
         <button class="theme-toggle-header" id="themeToggleMobile" aria-label="Toggle theme">
             <!-- SVG Moon Icon -->
             <svg class="nav-icon" viewBox="0 0 24 24" id="themeIconMobile">
@@ -28,70 +37,235 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="app-container">
-        
+
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand-text">ኢብኑ ዑመር መድረሳ</div>
-                <div class="sidebar-brand-sub">የተማሪዎች መገኘት መቆጣጠሪያ</div>
+            <div class="sidebar-header" id="sidebarBrandHome">
+                <img class="brand-logo"
+                    src="assets/images/Ibnu Oumer Qur’an Memorization Medresa مدرسة ابن عمر لتحفيظ القرآن الكريم.png"
+                    alt="Medresa Logo">
+                <div class="brand-text-wrapper">
+                    <div class="sidebar-brand-text">ኢብኑ ዑመር መድረሳ</div>
+                    <div class="sidebar-brand-sub">የተማሪዎች የቀሪ መቆጣጠሪያ</div>
+                </div>
             </div>
             <ul class="sidebar-menu">
                 <li>
                     <a class="sidebar-item active" data-view="dash-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
                         አጠቃላይ ዳሽቦርድ
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="attendance-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9 16l2 2 4-4"></path></svg>
-                        ዕለታዊ መገኘት ማርኪያ
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                            <path d="M9 16l2 2 4-4"></path>
+                        </svg>
+                        ዕለታዊ ቀሪ መቆጣጠሪያ
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="preview-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
                         ማስተር ፕሪቪው ሪፖርት
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="instructor-reg-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
                         አዲስ ኡስታዛ መመዝገቢያ
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="instructor-manage-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        የኡስታዛቶች ማውጫ
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        የኡስታዛዎች ዝርዝር መረጃ
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="student-reg-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 0 1 .665 6.479A11.952 11.952 0 0 0 12 14z"></path><path d="M12 14a15.68 15.68 0 0 1-6.825 3.057 12.084 12.084 0 0 1 .665-6.479L12 14z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 0 1 .665 6.479A11.952 11.952 0 0 0 12 14z">
+                            </path>
+                            <path d="M12 14a15.68 15.68 0 0 1-6.825 3.057 12.084 12.084 0 0 1 .665-6.479L12 14z"></path>
+                            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+                        </svg>
                         አዲስ ተማሪ መመዝገቢያ
                     </a>
                 </li>
                 <li>
                     <a class="sidebar-item" data-view="student-manage-view">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                        የተማሪዎች ማውጫ
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        የተማሪዎች ዝርዝር መረጃ
                     </a>
                 </li>
             </ul>
             <div class="sidebar-footer" style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;">ገጽታ</span>
-                <button class="btn btn-secondary" id="themeToggleSidebar" style="padding:6px 12px; font-size:12px; border-radius: var(--radius-sm);">🌙 ጨለማ</button>
+                <button class="btn btn-secondary" id="themeToggleSidebar"
+                    style="padding:6px 12px; font-size:12px; border-radius: var(--radius-sm);">🌙 ጨለማ</button>
             </div>
         </nav>
 
         <main class="main-content">
 
-            <section id="dash-view" class="app-view active">
-                <h2>የአጠቃላይ ሁኔታ መቆጣጠሪያ ሰሌዳ</h2>
-                
+            <section id="home-view" class="app-view active">
+                <div class="home-hero">
+                    <h1 class="home-title">ኢብኑ ዑመር መድረሳ</h1>
+                    <p class="home-subtitle">የተማሪዎች መገኘት መቆጣጠሪያ ሲስተም</p>
+                    <p class="home-desc">ይህ መተግበሪያ የኢብኑ ዑመር መድረሳ ተማሪዎች የቀሪ መቆጣጠሪያ፣ የወርሃዊ ሪፖርት ማመንጫ እና የኡስታዛዎች ዝርዝር መረጃ
+                        ማስተዳደሪያ ማዕከላዊ ሥርዓት ነው።</p>
+                </div>
+
+                <!-- CSS Mosaic Art -->
+                <div class="mosaic-container">
+                    <div class="mosaic-grid">
+                        <div class="mosaic-card card-pattern">
+                            <span class="mosaic-icon">📖</span>
+                            <h3>ቁርዓን ሂፍዝ</h3>
+                            <p>የቁርዓን ንባብ እና ሂፍዝ ክትትል ማስተባበሪያ</p>
+                        </div>
+                        <div class="mosaic-card card-logo">
+                            <div class="mosaic-logo-circle">
+                                <img src="assets/images/Ibnu Oumer Qur’an Memorization Medresa مدرسة ابن عمر لتحفيظ القرآن الكريم.png"
+                                    alt="Ibnu Oumer Logo" class="mosaic-logo-img">
+                            </div>
+                        </div>
+                        <div class="mosaic-card card-stats">
+                            <span class="mosaic-icon">📊</span>
+                            <h3>አስተማማኝ ሪፖርት</h3>
+                            <p>የተማሪዎችን መቅረት በጥልቅ ስታቲስቲክስ የሚተነትን</p>
+                        </div>
+                        <div class="mosaic-card card-easy">
+                            <span class="mosaic-icon">✨</span>
+                            <h3>ቀላል አጠቃቀም</h3>
+                            <p>ለኡስታዛዎች ምቹ እና ፈጣን የሆነ ምዝገባ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="home-section">
+                    <h2 class="section-title">የሲስተሙ ዋና ዋና ባህሪያት (Features)</h2>
+                    <div class="features-grid">
+                        <div class="home-feature-card">
+                            <div class="feature-icon-wrapper color-green">✓</div>
+                            <h3>ዕለታዊ መገኘት መቆጣጠሪያ</h3>
+                            <p>በቀላሉ የየቀኑን ተማሪ መገኘት (መጣ፣ ቀረ፣ ፍቃድ) መመዝገብ እና ታሪክ ማየት።</p>
+                        </div>
+                        <div class="home-feature-card">
+                            <div class="feature-icon-wrapper color-blue">📊</div>
+                            <h3>ዳሽቦርድ እና ትንተና</h3>
+                            <p>የቀሩ ተማሪዎች ብዛት፣ አስጊ ደረጃ ላይ የደረሱ ተማሪዎች እና የባር ቻርት ትንተናዎች።</p>
+                        </div>
+                        <div class="home-feature-card">
+                            <div class="feature-icon-wrapper color-yellow">📥</div>
+                            <h3>የማስተር ሪፖርት ማውረጃ</h3>
+                            <p>ወርሃዊ የተማሪዎችን የቀሪ ሁኔታ ሪፖርት በፒዲኤፍ (PDF) ማውረድ እና ማተም።</p>
+                        </div>
+                        <div class="home-feature-card">
+                            <div class="feature-icon-wrapper color-purple">👥</div>
+                            <h3>ኡስታዛ እና ተማሪ ማስተዳደሪያ</h3>
+                            <p>ኡስታዛዎችን መመዝገብ፣ ተማሪዎችን በነጠላ ወይም በቡድን (batch) መመዝገብ።</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to Use Section -->
+                <div class="home-section card-steps-container">
+                    <h2 class="section-title">መተግበሪያውን እንዴት እንጠቀምበታለን? (How to Use)</h2>
+                    <div class="steps-list">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>ኡስታዛ መመዝገብ</h3>
+                                <p>በመጀመሪያ በ sidebar ላይ የሚገኘውን <strong>አዲስ ኡስታዛ መመዝገቢያ</strong> በመጠቀም ኡስታዛዎችን ይመዝግቡ።</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>ተማሪ መመዝገብ</h3>
+                                <p><strong>አዲስ ተማሪ መመዝገቢያ</strong>ን በመጫን ተማሪዎችን ይመዝግቡ። ተማሪዎችን በነጠላ ወይም በባች (5፣ 10፣ 20)
+                                    መመዝገብ ይችላሉ።</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>ዕለታዊ መገኘት መመዝገብ</h3>
+                                <p><strong>ዕለታዊ ቀሪ መቆጣጠሪያ</strong> ገጽ ላይ በመግባት የሚፈልጉትን ኡስታዛ ይምረጡ፣ ከዚያም የየቀኑን መገኘት ያረጋግጡ።
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Helpful Tip UI Box -->
+                    <div class="tip-box">
+                        <div class="tip-title">💡 ጠቃሚ ምክር (Tip)</div>
+                        <p class="tip-text">በመገኘት መቆጣጠሪያው ላይ ሁሉንም ተማሪዎች በአንድ ጊዜ ለመመዝገብ <strong>"✓ ሁሉንም መጣ በል"</strong>
+                            የሚለውን ቁልፍ መጠቀም ይችላሉ። ከዚያም የቀሩ ወይም ፍቃድ የጠየቁ ተማሪዎች ያሉበትን አረፋ (bubble) ብቻ በመጫን በቀላሉ መቀየር ይችላሉ።
+                            በአብዛኛው መድረሳ የሚመጡ ተማሪዎች ብዛት ከሚቀሩት ስለሚበልጥ ይህ ዘዴ ምዝገባውን እጅግ ያፈጥነዋል!</p>
+                    </div>
+                    <div class="tip-box" style="margin-top: 20px;">
+                        <div class="tip-title">🔔 ማሳሰቢያ</div>
+                        <p class="tip-text">ይህ የቀሪ መቆጣጠሪያ ስርዓት፤ ስርዓቱ (the system) ከመከፈቱ በፊት ያሉ ቀናትን እንዲሁም ያልተደረሰባቸውን
+                            ወደፊት የሚመጡ ቀናት ለመቆጣጠር
+                            አያስችልም። ለምሳሌ እርሶ ይህን ስርዓት ለመጀመሪያ ጊዜ የከፈቱት ሰኔ 10 2018 ቢሆን፤ ከሰኔ 10 በፊት ያሉ ቀናትን መቆጣጠር አይችሉም።
+                            እንዲሁም ዛሬ ለምሳሌ ሰኔ 15 ቢሆን ሰኔ 16፣ 17፣ 18፣ ... የመሳሰሉ የወደፊት ቀናትን (future days) መቆጣጠር አይችሉም።</p>
+                        <p class="tip-title">🙏 አገልግሎታችንን እየተጠቀሙ ስለሆነ እናመሰግናለን።</p>
+                    </div>
+                </div>
+
+                <!-- Footer / Hire Developer -->
+                <footer class="home-footer">
+                    <p>ይህንን ሲስተም ያዘጋጀው፦ <strong>ሃምዛ ሀሰን | Fullstack Web Developer</strong></p>
+                    <p>ለተጨማሪ ስራዎች እና መረጃ ፖርትፎሊዮዬን ይጎብኙ፦ <a href="https://personal-portfolio-hamza-seven.vercel.app"
+                            target="_blank" class="dev-portfolio-link">Hamza Hassen Portfolio 🌐</a>
+                        <span class="indicator">👈</span>
+                    </p>
+
+                </footer>
+            </section>
+
+            <section id="dash-view" class="app-view">
+                <h2>አጠቃላይ የቀሪ ሁኔታ መቆጣጠሪያ ሰሌዳ</h2>
+
                 <div class="dash-cards-grid">
                     <div class="stat-card variant-1">
-                        <span class="stat-label">ጠቅላላ የተመዘገቡ ተማሪዎች</span>
+                        <span class="stat-label">ጠቅላላ የተመዘገቡ ተማሪዎች ብዛት</span>
                         <span class="stat-value" id="cardTotalStudents">0</span>
                     </div>
                     <div class="stat-card variant-2">
@@ -113,62 +287,71 @@
                         <h3 style="font-size: 15px; font-weight:600;">የተማሪዎች መቅረት በኡስታዛቶች እይታ (የአሁኑ ወር)</h3>
                         <div class="graph-container">
                             <div class="bar-chart-row" id="barChartContainer">
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card" style="display: flex; flex-direction: column;">
-                        <h3 style="font-size: 14.5px; font-weight:600; margin-bottom:15px; color: var(--danger);">3 ቀን የቀሩ ተማሪዎች ዝርዝር</h3>
+                        <h3 style="font-size: 14.5px; font-weight:600; margin-bottom:15px; color: var(--danger);">3 ቀን
+                            የቀሩ ተማሪዎች ዝርዝር</h3>
                         <div style="overflow-y:auto; flex:1; max-height: 220px;" id="dashCriticalAbsentList">
-                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section id="attendance-view" class="app-view">
                 <div class="sticky-filter-head">
-                    <h2>ዕለታዊ መገኘት ማርኪያ ሰሌዳ</h2>
+                    <h2>ዕለታዊ ቀሪ መቆጣጠሪያ ሰሌዳ</h2>
                     <div class="card" style="margin-bottom:16px; padding: 14px 20px;">
-                        <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center; justify-content:space-between;">
+                        <div
+                            style="display:flex; flex-wrap:wrap; gap:15px; align-items:center; justify-content:space-between;">
                             <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
                                 <div>
                                     <label style="font-weight:600; margin-right:8px; font-size:13px;">ኡስታዛ መምረጫ፦</label>
-                                    <select class="form-control" id="attendanceInstructorSelect" style="width:180px; display:inline-block; padding:6px 12px;"></select>
+                                    <select class="form-control" id="attendanceInstructorSelect"
+                                        style="width:180px; display:inline-block; padding:6px 12px;"></select>
                                 </div>
-                                <button class="btn btn-secondary" id="btnMarkAllPresent" style="padding:6px 12px; font-size:12.5px;">✓ ሁሉንም መጣ በል</button>
+                                <button class="btn btn-secondary" id="btnMarkAllPresent"
+                                    style="padding:6px 12px; font-size:12.5px;">✓ ሁሉንም መጣ በል</button>
                             </div>
                             <div class="attendance-legend">
                                 <div class="legend-item"><span class="legend-dot present"></span> <span>መጣ</span></div>
                                 <div class="legend-item"><span class="legend-dot absent"></span> <span>ቀረ</span></div>
-                                <div class="legend-item"><span class="legend-dot permission"></span> <span>ፍቃድ</span></div>
+                                <div class="legend-item"><span class="legend-dot permission"></span> <span>ፍቃድ</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive" id="attendanceMatrixContainer" style="max-height:60vh;">
-                    </div>
+                </div>
             </section>
 
             <section id="preview-view" class="app-view">
                 <div class="sticky-filter-head">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
-                        <h2 style="margin:0;">የመገኘት ማስተር ሪፖርት ቅድመ-እይታ</h2>
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                        <h2 style="margin:0;">የቀሪ ሁኔታ ሪፖርት ቅድመ-እይታ</h2>
                         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
-                                <select class="form-control" id="previewInstructorFilter" style="width:200px; display:inline-block; padding:6px 12px;"></select>
+                                <select class="form-control" id="previewInstructorFilter"
+                                    style="width:200px; display:inline-block; padding:6px 12px;"></select>
                             </div>
-                            <button class="btn btn-primary" id="btnDownloadPdf"><span style="font-size:16px;">📥</span> የፒዲኤፍ (PDF) ማስተር ማውረጃ</button>
+                            <button class="btn btn-primary" id="btnDownloadPdf"><span style="font-size:16px;">📥</span>
+                                የፒዲኤፍ (PDF) ማውረጃ</button>
                         </div>
                     </div>
                 </div>
                 <div class="card" style="background:#0f172a; padding:20px; overflow-x:auto;">
-                    <div id="pdfExportWrapper" style="display:inline-block; width:max-content; background:white; border-radius:4px;">
-                        </div>
+                    <div id="pdfExportWrapper"
+                        style="display:inline-block; width:max-content; background:white; border-radius:4px;">
+                    </div>
                 </div>
             </section>
 
             <section id="instructor-reg-view" class="app-view">
-                <h2>አዲስ ኡስታዛ መመዝገቢያ ፎርም</h2>
+                <h2 id="instructorRegHeader">አዲስ ኡስታዛ መመዝገቢያ ፎርም</h2>
                 <div class="card" style="max-width: 550px;">
                     <form id="instructorRegForm">
                         <div class="form-group">
@@ -183,7 +366,12 @@
                             <label>የስልክ ቁጥር *</label>
                             <input type="tel" id="insPhone" class="form-control" required placeholder="09...">
                         </div>
-                        <button type="submit" class="btn btn-primary" style="margin-top:10px;">ኡስታዛ መዝግብ</button>
+                        <div style="display:flex; gap:12px; margin-top:10px;">
+                            <button type="submit" id="btnInstructorSubmit" class="btn btn-primary" style="flex:1;">ኡስታዛ
+                                መዝግብ</button>
+                            <button type="button" id="btnInstructorCancel" class="btn btn-secondary"
+                                style="display:none;" onclick="cancelInstructorEdit()">ሰርዝ</button>
+                        </div>
                     </form>
                 </div>
             </section>
@@ -206,11 +394,12 @@
             </section>
 
             <section id="student-reg-view" class="app-view">
-                <div class="batch-control-wrapper">
+                <div class="batch-control-wrapper" id="studentBatchControlWrapper">
                     <h2 style="margin:0; font-size:18px;">አዲስ ተማሪ መመዝገቢያ ፎርም</h2>
                     <div>
                         <label style="font-size:12.5px; font-weight:700;">ተከታታይ (Batch) ምዝገባ፦ </label>
-                        <select class="form-control" id="batchLimitSelect" style="width:75px; display:inline-block; padding:4px 8px; margin-left:6px;">
+                        <select class="form-control" id="batchLimitSelect"
+                            style="width:75px; display:inline-block; padding:4px 8px; margin-left:6px;">
                             <option value="1">ነጠላ</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -221,16 +410,18 @@
                 </div>
 
                 <div id="studentFormContainer">
-                    </div>
+                </div>
             </section>
 
             <section id="student-manage-view" class="app-view">
                 <div class="sticky-filter-head">
-                    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
+                    <div
+                        style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
                         <h2 style="margin:0;">የተማሪዎች አጠቃላይ መረጃ ማውጫ</h2>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
-                            <select class="form-control" id="studentInstructorFilter" style="width:200px; display:inline-block; padding:6px 12px;"></select>
+                            <select class="form-control" id="studentInstructorFilter"
+                                style="width:200px; display:inline-block; padding:6px 12px;"></select>
                         </div>
                     </div>
                 </div>
@@ -240,6 +431,7 @@
                             <tr>
                                 <th style="width:60px;">ተ.ቁ</th>
                                 <th>ተማሪ ሙሉ ስም</th>
+                                <th>የስልክ ቁጥር</th>
                                 <th>የተመደበችበት ኡስታዛ</th>
                                 <th style="width:80px;">ተግባር</th>
                             </tr>
@@ -257,6 +449,24 @@
         <button class="dropdown-item" id="btnDropdownDelete" style="color:var(--danger);">🗑️ በቋሚነት ሰርዝ</button>
     </div>
 
+    <!-- Custom Premium Modal Overlay -->
+    <div class="custom-modal-overlay" id="customModal">
+        <div class="custom-modal-card">
+            <div class="custom-modal-header">
+                <span class="custom-modal-title" id="customModalTitle">ማረጋገጫ</span>
+                <button class="custom-modal-close" id="btnCustomModalClose">&times;</button>
+            </div>
+            <div class="custom-modal-body" id="customModalBody">
+                እርግጠኛ ነዎት?
+            </div>
+            <div class="custom-modal-footer">
+                <button class="btn btn-secondary" id="btnCustomModalCancel">አይ ተወው</button>
+                <button class="btn btn-primary" id="btnCustomModalConfirm">አዎ</button>
+            </div>
+        </div>
+    </div>
+
     <script defer src="app.js"></script>
 </body>
+
 </html>
