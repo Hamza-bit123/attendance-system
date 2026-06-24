@@ -23,10 +23,10 @@
         <div class="mobile-brand-wrapper" id="mobileBrandHome">
             <img class="brand-logo"
                 src="assets/images/Ibnu Oumer Qur’an Memorization Medresa مدرسة ابن عمر لتحفيظ القرآن الكريم.png"
-                alt="Medresa Logo">
+                alt="የመድረሳ አርማ">
             <div class="mobile-title">ኢብኑ ዑመር መድረሳ</div>
         </div>
-        <button class="theme-toggle-header" id="themeToggleMobile" aria-label="Toggle theme">
+        <button class="theme-toggle-header" id="themeToggleMobile" aria-label="ገጽታ ቀይር">
             <!-- SVG Moon Icon -->
             <svg class="nav-icon" viewBox="0 0 24 24" id="themeIconMobile">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -42,7 +42,7 @@
             <div class="sidebar-header" id="sidebarBrandHome">
                 <img class="brand-logo"
                     src="assets/images/Ibnu Oumer Qur’an Memorization Medresa مدرسة ابن عمر لتحفيظ القرآن الكريم.png"
-                    alt="Medresa Logo">
+                    alt="የመድረሳ አርማ">
                 <div class="brand-text-wrapper">
                     <div class="sidebar-brand-text">ኢብኑ ዑመር መድረሳ</div>
                     <div class="sidebar-brand-sub">የተማሪዎች የቀሪ መቆጣጠሪያ</div>
@@ -132,10 +132,21 @@
                     </a>
                 </li>
             </ul>
-            <div class="sidebar-footer" style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;">ገጽታ</span>
-                <button class="btn btn-secondary" id="themeToggleSidebar"
-                    style="padding:6px 12px; font-size:12px; border-radius: var(--radius-sm);">🌙 ጨለማ</button>
+            <div class="sidebar-footer">
+                <a class="sidebar-item sidebar-settings-item" data-view="settings-view">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6V20a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1H4a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6V4a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.31.33.59.6.8H20a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-.51 1.2z">
+                        </path>
+                    </svg>
+                    ቅንብሮች
+                </a>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                    <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;">ገጽታ</span>
+                    <button class="btn btn-secondary" id="themeToggleSidebar"
+                        style="padding:6px 12px; font-size:12px; border-radius: var(--radius-sm);">🌙 ጨለማ</button>
+                </div>
             </div>
         </nav>
 
@@ -178,7 +189,7 @@
 
                 <!-- Features Section -->
                 <div class="home-section">
-                    <h2 class="section-title">የሲስተሙ ዋና ዋና ባህሪያት (Features)</h2>
+                    <h2 class="section-title">የሲስተሙ ዋና ዋና ባህሪያት</h2>
                     <div class="features-grid">
                         <div class="home-feature-card">
                             <div class="feature-icon-wrapper color-green">✓</div>
@@ -193,7 +204,7 @@
                         <div class="home-feature-card">
                             <div class="feature-icon-wrapper color-yellow">📥</div>
                             <h3>የማስተር ሪፖርት ማውረጃ</h3>
-                            <p>ወርሃዊ የተማሪዎችን የቀሪ ሁኔታ ሪፖርት በፒዲኤፍ (PDF) ማውረድ እና ማተም።</p>
+                            <p>ወርሃዊ የተማሪዎችን የቀሪ ሁኔታ ሪፖርት በፒዲኤፍ ማውረድ እና ማተም።</p>
                         </div>
                         <div class="home-feature-card">
                             <div class="feature-icon-wrapper color-purple">👥</div>
@@ -205,13 +216,13 @@
 
                 <!-- How to Use Section -->
                 <div class="home-section card-steps-container">
-                    <h2 class="section-title">መተግበሪያውን እንዴት እንጠቀምበታለን? (How to Use)</h2>
+                    <h2 class="section-title">መተግበሪያውን እንዴት እንጠቀምበታለን?</h2>
                     <div class="steps-list">
                         <div class="step-item">
                             <div class="step-number">1</div>
                             <div class="step-content">
                                 <h3>ኡስታዛ መመዝገብ</h3>
-                                <p>በመጀመሪያ በ sidebar ላይ የሚገኘውን <strong>አዲስ ኡስታዛ መመዝገቢያ</strong> በመጠቀም ኡስታዛዎችን ይመዝግቡ።</p>
+                                <p>በመጀመሪያ በጎን ምናሌው ላይ የሚገኘውን <strong>አዲስ ኡስታዛ መመዝገቢያ</strong> በመጠቀም ኡስታዛዎችን ይመዝግቡ።</p>
                             </div>
                         </div>
                         <div class="step-item">
@@ -234,26 +245,45 @@
 
                     <!-- Helpful Tip UI Box -->
                     <div class="tip-box">
-                        <div class="tip-title">💡 ጠቃሚ ምክር (Tip)</div>
+                        <div class="tip-title">💡 ጠቃሚ ምክር</div>
                         <p class="tip-text">በመገኘት መቆጣጠሪያው ላይ ሁሉንም ተማሪዎች በአንድ ጊዜ ለመመዝገብ <strong>"✓ ሁሉንም መጣ በል"</strong>
-                            የሚለውን ቁልፍ መጠቀም ይችላሉ። ከዚያም የቀሩ ወይም ፍቃድ የጠየቁ ተማሪዎች ያሉበትን አረፋ (bubble) ብቻ በመጫን በቀላሉ መቀየር ይችላሉ።
+                            የሚለውን ቁልፍ መጠቀም ይችላሉ። ከዚያም የቀሩ ወይም ፍቃድ የጠየቁ ተማሪዎች ያሉበትን ክብ ምልክት ብቻ በመጫን በቀላሉ መቀየር ይችላሉ።
                             በአብዛኛው መድረሳ የሚመጡ ተማሪዎች ብዛት ከሚቀሩት ስለሚበልጥ ይህ ዘዴ ምዝገባውን እጅግ ያፈጥነዋል!</p>
                     </div>
                     <div class="tip-box" style="margin-top: 20px;">
                         <div class="tip-title">🔔 ማሳሰቢያ</div>
-                        <p class="tip-text">ይህ የቀሪ መቆጣጠሪያ ስርዓት፤ ስርዓቱ (the system) ከመከፈቱ በፊት ያሉ ቀናትን እንዲሁም ያልተደረሰባቸውን
+                        <p class="tip-text">ይህ የቀሪ መቆጣጠሪያ ስርዓት፤ ስርዓቱ ከመከፈቱ በፊት ያሉ ቀናትን እንዲሁም ያልተደረሰባቸውን
                             ወደፊት የሚመጡ ቀናት ለመቆጣጠር
                             አያስችልም። ለምሳሌ እርሶ ይህን ስርዓት ለመጀመሪያ ጊዜ የከፈቱት ሰኔ 10 2018 ቢሆን፤ ከሰኔ 10 በፊት ያሉ ቀናትን መቆጣጠር አይችሉም።
-                            እንዲሁም ዛሬ ለምሳሌ ሰኔ 15 ቢሆን ሰኔ 16፣ 17፣ 18፣ ... የመሳሰሉ የወደፊት ቀናትን (future days) መቆጣጠር አይችሉም።</p>
+                            እንዲሁም ዛሬ ለምሳሌ ሰኔ 15 ቢሆን ሰኔ 16፣ 17፣ 18፣ ... የመሳሰሉ የወደፊት ቀናትን መቆጣጠር አይችሉም።</p>
                         <p class="tip-title">🙏 አገልግሎታችንን እየተጠቀሙ ስለሆነ እናመሰግናለን።</p>
+                    </div>
+                </div>
+
+                <!-- Color Rules Section -->
+                <div class="home-section color-rules-section">
+                    <h2 class="section-title">የቀለም መመሪያ</h2>
+                    <div class="home-color-rules">
+                        <div class="color-rule-item">
+                            <span class="color-rule-swatch missed"></span>
+                            <span>ቀላል ቀይ፦ ያልተመዘገበ ያለፈ ቀን</span>
+                        </div>
+                        <div class="color-rule-item">
+                            <span class="color-rule-swatch inactive"></span>
+                            <span>መስመር፦ ትምህርት የሌለበት ወይም የተቆለፈ ቀን</span>
+                        </div>
+                        <div class="color-rule-item">
+                            <span class="color-rule-swatch current"></span>
+                            <span>ሰማያዊ፦ የዛሬ ቀን</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Footer / Hire Developer -->
                 <footer class="home-footer">
-                    <p>ይህንን ሲስተም ያዘጋጀው፦ <strong>ሃምዛ ሀሰን | Fullstack Web Developer</strong></p>
+                    <p>ይህንን ሲስተም ያዘጋጀው፦ <strong>ሃምዛ ሀሰን | ፉልስታክ ድር ገንቢ</strong></p>
                     <p>ለተጨማሪ ስራዎች እና መረጃ ፖርትፎሊዮዬን ይጎብኙ፦ <a href="https://personal-portfolio-hamza-seven.vercel.app"
-                            target="_blank" class="dev-portfolio-link">Hamza Hassen Portfolio 🌐</a>
+                            target="_blank" class="dev-portfolio-link">የሃምዛ ሀሰን ፖርትፎሊዮ 🌐</a>
                         <span class="indicator">👈</span>
                     </p>
 
@@ -339,7 +369,7 @@
                                     style="width:200px; display:inline-block; padding:6px 12px;"></select>
                             </div>
                             <button class="btn btn-primary" id="btnDownloadPdf"><span style="font-size:16px;">📥</span>
-                                የፒዲኤፍ (PDF) ማውረጃ</button>
+                                የፒዲኤፍ ማውረጃ</button>
                         </div>
                     </div>
                 </div>
@@ -347,6 +377,51 @@
                     <div id="pdfExportWrapper"
                         style="display:inline-block; width:max-content; background:white; border-radius:4px;">
                     </div>
+                </div>
+            </section>
+
+            <section id="settings-view" class="app-view">
+                <h2>ቅንብሮች</h2>
+                <div class="card settings-card">
+                    <form id="settingsForm">
+                        <div class="settings-section">
+                            <div>
+                                <h3>ትምህርት የሌለባቸው የሳምንት ቀናት</h3>
+                                <p>ትምህርት የማይኖርባቸውን የሳምንት ቀናት ይምረጡ። እነዚህ ቀናት በመመዝገቢያ፣ በቅድመ እይታ እና በፒዲኤፍ ሪፖርት ላይ ዝግ ይሆናሉ።</p>
+                            </div>
+                            <div class="weekday-grid" aria-label="ትምህርት የሌለባቸው የሳምንት ቀናት">
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay1" value="1">
+                                    <span>ሰኞ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay2" value="2">
+                                    <span>ማክሰኞ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay3" value="3">
+                                    <span>ረቡዕ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay4" value="4">
+                                    <span>ሐሙስ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay5" value="5">
+                                    <span>አርብ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay6" value="6">
+                                    <span>ቅዳሜ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay0" value="0">
+                                    <span>እሁድ</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">ቅንብሮችን አስቀምጥ</button>
+                    </form>
                 </div>
             </section>
 
@@ -359,8 +434,8 @@
                             <input type="text" id="insFirstName" class="form-control" required placeholder="ለምሳሌ፦ ጀሚላ">
                         </div>
                         <div class="form-group">
-                            <label>የአባት ስም * (ከሌለ Unknown ይበሉ)</label>
-                            <input type="text" id="insLastName" class="form-control" required value="Unknown">
+                            <label>የአባት ስም * (ከሌለ አይታወቅም ይበሉ)</label>
+                            <input type="text" id="insLastName" class="form-control" required value="አይታወቅም">
                         </div>
                         <div class="form-group">
                             <label>የስልክ ቁጥር *</label>
@@ -397,7 +472,7 @@
                 <div class="batch-control-wrapper" id="studentBatchControlWrapper">
                     <h2 style="margin:0; font-size:18px;">አዲስ ተማሪ መመዝገቢያ ፎርም</h2>
                     <div>
-                        <label style="font-size:12.5px; font-weight:700;">ተከታታይ (Batch) ምዝገባ፦ </label>
+                        <label style="font-size:12.5px; font-weight:700;">ተከታታይ ምዝገባ፦ </label>
                         <select class="form-control" id="batchLimitSelect"
                             style="width:75px; display:inline-block; padding:4px 8px; margin-left:6px;">
                             <option value="1">ነጠላ</option>
@@ -466,7 +541,16 @@
         </div>
     </div>
 
-    <script defer src="app.js"></script>
+    <script defer src="js/core/calendar.js"></script>
+    <script defer src="js/core/state.js"></script>
+    <script defer src="js/core/theme.js"></script>
+    <script defer src="js/core/app-shell.js"></script>
+    <script defer src="js/features/dashboard.js"></script>
+    <script defer src="js/features/instructors.js"></script>
+    <script defer src="js/features/students.js"></script>
+    <script defer src="js/features/actions.js"></script>
+    <script defer src="js/features/attendance.js"></script>
+    <script defer src="js/features/reports.js"></script>
 </body>
 
 </html>
