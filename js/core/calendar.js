@@ -302,3 +302,9 @@ function isFutureDay(dayNumber) {
 function isTodayDay(dayNumber) {
   return isCurrentMonth() && dayNumber === TODAY_EC.day;
 }
+
+// Detect mobile device to scale down canvas sizes and avoid memory exhaustion
+function getPdfScale() {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return isMobile ? 1.0 : 2.0;
+}

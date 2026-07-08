@@ -1950,3 +1950,211 @@ h2 {
         align-self: flex-start;
     }
 }
+
+/* ====================================================
+   Premium PDF Warning Report & Preview Container Styles
+   ==================================================== */
+
+.pdf-preview-container {
+    background-color: var(--bg-main) !important;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    overflow-x: auto;
+    width: 100%;
+}
+
+.pdf-report-inner {
+    border: 3px double #059669;
+    padding: 25px 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.pdf-official-header {
+    text-align: center;
+    border-bottom: 2px solid #059669;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.pdf-official-header h1 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #064e3b !important;
+    margin: 0 0 4px 0 !important;
+    letter-spacing: 0.5px;
+}
+
+.pdf-official-header p.subtitle {
+    font-size: 11px !important;
+    color: #059669 !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0;
+}
+
+.pdf-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    font-size: 12.5px;
+}
+
+.pdf-meta-grid div span.label {
+    color: #047857;
+    font-weight: bold;
+}
+
+.pdf-meta-grid div span.value {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.pdf-warning-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.pdf-warning-table th {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12px !important;
+    padding: 8px 10px !important;
+    border: 1px solid #047857 !important;
+}
+
+.pdf-warning-table td {
+    padding: 8px 10px !important;
+    border: 1px solid #d1d5db !important;
+    font-size: 12.5px !important;
+    color: #1f2937 !important;
+    text-align: center;
+}
+
+.pdf-warning-table tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.pdf-warning-table td.student-name {
+    text-align: left;
+    font-weight: 600;
+    color: #111827;
+}
+
+.pdf-badge-danger {
+    background-color: #fee2e2 !important;
+    color: #dc2626 !important;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid #fecaca;
+    display: inline-block;
+}
+
+.pdf-policy-box {
+    background-color: #fffbeb;
+    border-left: 4px solid #d97706;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 20px 0;
+}
+
+.pdf-policy-box h4 {
+    color: #92400e !important;
+    font-size: 13.5px !important;
+    font-weight: bold;
+    margin: 0 0 6px 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pdf-policy-box p {
+    color: #4b5563 !important;
+    font-size: 12.5px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    text-align: justify;
+}
+
+.pdf-signatures-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.pdf-signature-block {
+    text-align: center;
+}
+
+.pdf-signature-line {
+    border-bottom: 1.5px dashed #059669;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.pdf-signature-block p.title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #111827;
+    margin: 0;
+}
+
+.pdf-signature-block p.subtitle {
+    font-size: 11px;
+    color: #6b7280;
+    margin: 2px 0 0 0;
+}
+
+/* Document border wrapper for single student warning */
+.pdf-letter-inner {
+    border: 3px double #dc2626; /* red double border for individual warning */
+    padding: 25px 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.pdf-letter-header {
+    text-align: center;
+    border-bottom: 2px solid #dc2626;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.pdf-letter-header h1 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #7f1d1d !important;
+    margin: 0 0 4px 0 !important;
+}
+
+.pdf-letter-header p.subtitle {
+    font-size: 11px !important;
+    color: #dc2626 !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0;
+}

@@ -8,6 +8,51 @@ function getAttendanceStatus(stdId, year, monthIdx, dayIdx) {
   return state.attendance[key] || state.attendance[legacyKey] || "";
 }
 
+function waitForPdfPaint() {
+  const fontsReady = document.fonts && document.fonts.ready
+    ? document.fonts.ready.catch(() => {})
+    : Promise.resolve();
+
+  return fontsReady.then(
+    () =>
+      new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      }),
+  );
+}
+
+async function createPdfCaptureElement(source, width) {
+  const element = source.cloneNode(true);
+  element.classList.add("pdf-exporting");
+  element.setAttribute("aria-hidden", "true");
+  element.style.display = "block";
+  element.style.width = width;
+  element.style.maxWidth = "none";
+  element.style.background = "#ffffff";
+  element.style.borderRadius = "0";
+  element.style.position = "absolute";
+  element.style.left = "0";
+  element.style.top = "0";
+  element.style.zIndex = "2147483647";
+  element.style.opacity = "1";
+  element.style.pointerEvents = "none";
+  element.style.margin = "0";
+
+  document.body.appendChild(element);
+  await waitForPdfPaint();
+  return element;
+}
+
+function getPdfCanvasOptions(element) {
+  return {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    scrollX: 0,
+    scrollY: 0,
+  };
+}
+
 function renderMasterReportPreview() {
   const container = document.getElementById("pdfExportWrapper");
   container.innerHTML = "";
@@ -127,21 +172,13 @@ function renderMasterReportPreview() {
   }
 }
 
-function executePdfGeneration() {
+async function executePdfGeneration() {
   renderMasterReportPreview();
 
   const source = document.getElementById("pdfExportWrapper");
-  const element = source.cloneNode(true);
-  element.classList.add("pdf-exporting");
-  element.style.display = "block";
-  element.style.width = "297mm";
-  element.style.background = "#ffffff";
-  element.style.borderRadius = "0";
-  element.style.position = "fixed";
-  element.style.left = "-10000px";
-  element.style.top = "0";
-  element.style.zIndex = "-1";
-  document.body.appendChild(element);
+  if (!source) return;
+
+  source.classList.add("pdf-exporting");
 
   const year = state.selectedYear;
   const monthName = monthsEthiopic[state.selectedMonth];
@@ -150,18 +187,25 @@ function executePdfGeneration() {
     margin: 0,
     filename: `Ibnu_Oumar_${monthName}_${year}_Attendance_Report.pdf`,
     image: { type: "jpeg", quality: 1.0 },
-    html2canvas: { scale: 2, useCORS: true },
+    html2canvas: {
+      scale: getPdfScale(),
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      logging: true
+    },
     jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     pagebreak: { mode: ["css", "legacy"] },
   };
 
-  html2pdf()
-    .set(opt)
-    .from(element)
-    .save()
-    .finally(() => {
-      element.remove();
-    });
+  try {
+    await html2pdf().set(opt).from(source).save();
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+  } finally {
+    source.classList.remove("pdf-exporting");
+  }
 }
 
 // Warning PDF (students absent 3+ days)
@@ -213,63 +257,104 @@ function renderWarningReportPreview() {
     const page = document.createElement("div");
     page.className = "pdfMasterReport";
 
-    let studentListHtml = "";
-    warningStudents.forEach((std) => {
-      studentListHtml += `<li>${std.firstName} ${std.lastName} ${absentMap[std.id]} ቀን</li>`;
+    let rowsHtml = "";
+    warningStudents.forEach((std, idx) => {
+      rowsHtml += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td class="student-name">${std.firstName} ${std.lastName}</td>
+          <td style="font-weight: 700; color: #dc2626;">${absentMap[std.id]} ቀን</td>
+          <td><span class="pdf-badge-danger">ማስጠንቀቂያ</span></td>
+        </tr>
+      `;
     });
 
-    page.innerHTML = `
-      <div>
-        <header style="color: rgb(78, 78, 78);">
-          <h3 style="text-align: center; font-size: 16px; font-weight: 700; margin: 0 0 5px 0;">ኢብኑ ዑመር መድረሳ በወርሃ ${monthName} ከ3 ቀን በላይ የቀሩ ተማሪዎች</h3>
-          <div class="horizontalLine"></div>
-        </header>
+    const todayStr = getTodayDisplayString();
 
-        <main style="margin-top: 30px; display: flex; flex-direction: column; gap: 20px;">
-          <div>
-            <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 10px 0;">ኡስታዛ ${ins.firstName} ${ins.lastName}</h4>
-            <ol style="margin: 15px 0px 0px 30px; line-height: 1.5; font-size: 14px;">
-              ${studentListHtml}
-            </ol>
+    page.innerHTML = `
+      <div class="pdf-report-inner">
+        <div>
+          <div class="pdf-official-header">
+            <h1>ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
+            <p class="subtitle">ibnu umer qur'an memorization medresa</p>
           </div>
-          <div>
-            <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 8px 0;">ማሳሰቢያ</h4>
-            <p style="line-height: 1.5; text-align: justify; margin: 0; font-size: 13.5px;">
-              እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር) በቀጥታ የሚመለከታቸው ይሆናል።
-              <br><br>
-              ህጉም በሚመለከታቸው አካላት እማካኝነት የሚፈፀም ይሆናል።
+
+          <div class="pdf-meta-grid">
+            <div>
+              <span class="label">የሪፖርት ዓይነት፦</span>
+              <span class="value">የቀሪ ማስጠንቀቂያ ጠቅላላ ሪፖርት</span>
+            </div>
+            <div>
+              <span class="label">ኡስታዛ፦</span>
+              <span class="value">${ins.firstName} ${ins.lastName}</span>
+            </div>
+            <div>
+              <span class="label">ወር፦</span>
+              <span class="value">${monthName} ${year} ዓ.ም</span>
+            </div>
+            <div>
+              <span class="label">የተዘጋጀበት ቀን፦</span>
+              <span class="value">${todayStr}</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 13px; font-weight: 700; color: #064e3b; margin: 15px 0 8px 0; font-family: var(--font); text-align: left;">ከ3 ቀን በላይ የቀሩ ተማሪዎች ዝርዝር</h3>
+          <table class="pdf-warning-table">
+            <thead>
+              <tr>
+                <th style="width: 10%;">ተ.ቁ</th>
+                <th style="width: 45%;">የተማሪ ስም</th>
+                <th style="width: 25%;">የቀሩበት ቀን ብዛት</th>
+                <th style="width: 20%;">ውሳኔ / ደረጃ</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+
+          <div class="pdf-policy-box">
+            <h4>⚠️ ማሳሰቢያ (Notice)</h4>
+            <p>
+              እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ም 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ) በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት አማካኝነት የሚፈፀም ይሆናል።
             </p>
           </div>
-        </main>
+        </div>
+
+        <div>
+          <div class="pdf-signatures-grid">
+            <div class="pdf-signature-block">
+              <div class="pdf-signature-line"></div>
+              <p class="title">ኡስታዛ ${ins.firstName} ${ins.lastName}</p>
+              <p class="subtitle">የክፍሉ ኡስታዛ ፊርማ</p>
+            </div>
+            <div class="pdf-signature-block">
+              <div class="pdf-signature-line"></div>
+              <p class="title">የመድረሳው አስተዳደር ኮሚቴ</p>
+              <p class="subtitle">ኢብኑ ዑመር መድረሳ</p>
+            </div>
+          </div>
+          <p style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
+            — ኢብኑ ዑመር መድረሳ ወርሃዊ የቀሪ ሪፖርት —
+          </p>
+        </div>
       </div>
-      <footer style="margin: 20px 10px 10px 10px; font-style: italic; color: grey;">
-        <div class="horizontalLine"></div>
-        <p style="margin: 0; text-align: center;">ኢብኑ ዑመር መድረሳ ወርሃዊ ረፖርት</p>
-      </footer>
     `;
     container.appendChild(page);
   });
 
   if (!hasContent) {
-    container.innerHTML = `<div style="color:black; padding:30px; text-align:center; font-family:var(--font);">ለዚህ ወር 3 ቀን ወይም ከዚያ በላይ የቀረ ተማሪ የለም።</div>`;
+    container.innerHTML = `<div style="color:var(--text-muted); padding:30px; text-align:center; font-family:var(--font);">ለዚህ ወር 3 ቀን ወይም ከዚያ በላይ የቀረ ተማሪ የለም።</div>`;
   }
 }
 
-function executeWarningPdfGeneration() {
+async function executeWarningPdfGeneration() {
   renderWarningReportPreview();
 
   const source = document.getElementById("warningPdfExportWrapper");
   if (!source) return;
-  const element = source.cloneNode(true);
-  element.classList.add("pdf-exporting");
-  element.style.display = "block";
-  element.style.width = "210mm";
-  element.style.background = "#ffffff";
-  element.style.position = "fixed";
-  element.style.left = "-10000px";
-  element.style.top = "0";
-  element.style.zIndex = "-1";
-  document.body.appendChild(element);
+
+  source.classList.add("pdf-exporting");
 
   const year = state.selectedYear;
   const monthName = monthsEthiopic[state.selectedMonth];
@@ -278,16 +363,23 @@ function executeWarningPdfGeneration() {
     margin: 0,
     filename: `Warning_Report_${monthName}_${year}.pdf`,
     image: { type: "jpeg", quality: 1.0 },
-    html2canvas: { scale: 2, useCORS: true },
+    html2canvas: {
+      scale: getPdfScale(),
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      logging: true
+    },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     pagebreak: { mode: ["css", "legacy"] },
   };
 
-  html2pdf()
-    .set(opt)
-    .from(element)
-    .save()
-    .finally(() => {
-      element.remove();
-    });
+  try {
+    await html2pdf().set(opt).from(source).save();
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+  } finally {
+    source.classList.remove("pdf-exporting");
+  }
 }

@@ -277,7 +277,7 @@ function showStudentDetails(stdId) {
 }
 
 // Generate individual student revocation/warning PDF
-function executeIndividualWarningPdf(stdId) {
+async function executeIndividualWarningPdf(stdId) {
   const std = state.students.find((s) => s.id === stdId);
   if (!std) return;
 
@@ -299,55 +299,115 @@ function executeIndividualWarningPdf(stdId) {
   const absentDaysStr = absentDays.join("፣ ");
 
   const element = document.createElement("div");
-  element.className = "pdf-page-portrait pdf-exporting";
-  element.style.cssText = "position:fixed; left:-10000px; top:0; z-index:-1;";
+  element.className = "pdf-page-portrait";
 
   element.innerHTML = `
-    <div style="text-align:center; margin-bottom:24px; border-bottom:2px solid #0f172a; padding-bottom:16px;">
-      <h1 style="font-size:20px; font-weight:700; margin:0;">ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
-      <p style="font-size:12px; color:#64748b; margin:4px 0 0;">ibnu umer qur'an memorization medresa</p>
-    </div>
-    <div style="text-align:center; margin-bottom:20px;">
-      <h2 style="font-size:16px; font-weight:700; color:#dc2626; text-transform:uppercase; letter-spacing:1px;">የቀሪ ማስጠንቀቂያ ደብዳቤ</h2>
-    </div>
-    <div style="margin-bottom:20px; line-height:2.0; font-size:13px;">
-      <p>ቀን፦ <strong>${getTodayDisplayString()}</strong></p>
-      <p>ለ፦ ተማሪ <strong>${std.firstName} ${std.lastName}</strong></p>
-      <p>ኡስታዛ፦ <strong>${insName}</strong></p>
-    </div>
-    <div style="margin-bottom:24px; line-height:2.0; font-size:13px; text-align:justify;">
-      <p>አሁን ባለው ሁኔታ ተማሪዋ <strong>${std.firstName} ${std.lastName}</strong> ባለፈው ወር (${monthName} ${year} ዓ.ም) 
-      <strong style="color:#dc2626;">${absentCount} ቀን</strong> ቀርተዋል። 
-      ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong>።` : ""}
-      ይህ ቀሪ ቁጥር ከሦስት ቀን ያለፈ ስለሆነ፣ ተቋሙ ከዚህ ቅሬታ አቅርቦ ያስጠናቅቃል።</p>
-      <br>
-      <p>ተማሪዋ ________________________ በዚህ ማስጠንቀቂያ ስምምነቴን አረጋግጫለሁ፤ ቀሪ ሁኔታዬን ማሻሻል እቀጥላለሁ።</p>
-    </div>
-    <div style="margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:40px;">
-      <div style="text-align:center;">
-        <div style="border-bottom:1px solid #0f172a; margin-bottom:8px; padding-bottom:30px;"></div>
-        <p style="font-size:12px; font-weight:600;">የተቋም ኮሚቴ ፊርማ</p>
-        <p style="font-size:11px; color:#64748b;">ኢብኑ ዑመር መድረሳ</p>
+    <div class="pdf-letter-inner">
+      <div>
+        <div class="pdf-letter-header">
+          <h1 style="font-size: 20px !important; font-weight: 800 !important; color: #7f1d1d !important; margin: 0 0 4px 0 !important; font-family: var(--font);">ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
+          <p class="subtitle" style="font-size: 11px !important; color: #dc2626 !important; text-transform: uppercase; font-weight: 600; margin: 0; font-family: var(--font);">ibnu umer qur'an memorization medresa</p>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 25px;">
+          <h2 style="font-size: 16px; font-weight: 700; color: #dc2626; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; font-family: var(--font);">የቀሪ ማስጠንቀቂያ ደብዳቤ</h2>
+          <span style="font-size: 11px; color: #6b7280; font-style: italic;">Official Warning Letter</span>
+        </div>
+
+        <div class="pdf-meta-grid" style="background: #fef2f2; border: 1px solid #fecaca; margin-bottom: 25px; font-size: 13px;">
+          <div>
+            <span class="label" style="color: #b91c1c;">ቀን (Date)፦</span>
+            <span class="value" style="color: #111827;">${getTodayDisplayString()}</span>
+          </div>
+          <div>
+            <span class="label" style="color: #b91c1c;">ለተማሪ (To Student)፦</span>
+            <span class="value" style="color: #111827;">${std.firstName} ${std.lastName}</span>
+          </div>
+          <div>
+            <span class="label" style="color: #b91c1c;">ኡስታዛ (Instructor)፦</span>
+            <span class="value" style="color: #111827;">${insName}</span>
+          </div>
+          <div>
+            <span class="label" style="color: #b91c1c;">የቀሪ ብዛት (Total Absences)፦</span>
+            <span class="value" style="color: #b91c1c; font-weight: 700;">${absentCount} ቀን (Days)</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 25px; line-height: 1.8; font-size: 13px; text-align: justify; color: #374151; font-family: var(--font);">
+          <p style="margin: 0 0 15px 0;">
+            አሁን ባለው የመድረሳው ቁጥጥር መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong> ውስጥ ያለበቂ ምክንያትና ያለፈቃድ 
+            <strong style="color: #dc2626; font-size: 14.5px;">${absentCount} ቀን</strong> ከትምህርት ገበታ ቀርተዋል።
+            ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong> ናቸው።` : ""}
+          </p>
+          <p style="margin: 0 0 15px 0;">
+            ይህ የመቅረት ሁኔታ መድረሳው ተማሪዎች በቋሚነት እንዲገኙ ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) የሚቃረን እና ከባድ ደንብ መጣስ በመሆኑ፤ ይህ የመጀመሪያና የመጨረሻ ማስጠንቀቂያ ደብዳቤ እንዲደርስዎት ተደርጓል። በቀጣይ ቀሪ ሁኔታዎ ካልተሻሻለ እና መደበኛ ትምህርት ካልቀጠሉ መድረሳው ያስቀመጠው ጠንከር ያለ ህግ (ማባረር) ተግባራዊ የሚደረግ መሆኑን በጥብቅ እናሳውቃለን።
+          </p>
+        </div>
+
+        <div class="pdf-policy-box" style="background-color: #fef2f2; border-left: 4px solid #dc2626; margin-bottom: 25px;">
+          <h4 style="color: #991b1b !important; font-size: 13px !important; margin: 0 0 6px 0 !important; font-weight: bold;">✍️ የተማሪ ስምምነት ቃል (Student Agreement)</h4>
+          <p style="color: #4b5563 !important; font-size: 12.5px !important; line-height: 1.6 !important; margin: 0 !important;">
+            እኔ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በዚህ ደብዳቤ የቀረበብኝን የመቅረት ሪፖርት አምኜ በመቀበል፣ መድረሳው የሰጠኝን ማስጠንቀቂያ ተረድቻለሁ። በቀጣይ ያለፈቃድ እንደማልቀር እና የትምህርት ክትትሌን እንደማስተካክል በፊርማዬ አረጋግጣለሁ።
+          </p>
+        </div>
       </div>
-      <div style="text-align:center;">
-        <div style="border-bottom:1px solid #0f172a; margin-bottom:8px; padding-bottom:30px;"></div>
-        <p style="font-size:12px; font-weight:600;">የተማሪ ፊርማ</p>
-        <p style="font-size:11px; color:#64748b;">${std.firstName} ${std.lastName}</p>
+
+      <div>
+        <div class="pdf-signatures-grid" style="margin-top: 20px;">
+          <div class="pdf-signature-block">
+            <div class="pdf-signature-line" style="border-bottom-color: #dc2626;"></div>
+            <p class="title">የመድረሳው አስተዳደር ኮሚቴ</p>
+            <p class="subtitle">ፊርማ እና ማህተም</p>
+          </div>
+          <div class="pdf-signature-block">
+            <div class="pdf-signature-line" style="border-bottom-color: #dc2626;"></div>
+            <p class="title">ተማሪ ${std.firstName} ${std.lastName}</p>
+            <p class="subtitle">ፊርማ (Signature)</p>
+          </div>
+        </div>
+        <p style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
+          — ኢብኑ ዑመር መድረሳ የቀሪ ማስጠንቀቂያ ደብዳቤ —
+        </p>
       </div>
     </div>
   `;
 
+  // Position the element absolute behind the main app content to let browser lay it out, invisible to user
+  element.style.position = "absolute";
+  element.style.left = "0";
+  element.style.top = "0";
+  element.style.width = "210mm";
+  element.style.zIndex = "-9999";
+  element.style.opacity = "1";
+  element.style.pointerEvents = "none";
+  element.style.background = "#ffffff";
+  element.style.margin = "0";
+
   document.body.appendChild(element);
+
+  // Wait for rendering
+  await waitForPdfPaint();
 
   const opt = {
     margin: 0,
     filename: `Warning_${std.firstName}_${std.lastName}_${monthName}_${year}.pdf`,
     image: { type: "jpeg", quality: 1.0 },
-    html2canvas: { scale: 2, useCORS: true },
+    html2canvas: {
+      scale: getPdfScale(),
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+      logging: true
+    },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
 
-  html2pdf().set(opt).from(element).save().finally(() => {
+  try {
+    await html2pdf().set(opt).from(element).save();
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+  } finally {
     element.remove();
-  });
+  }
 }
