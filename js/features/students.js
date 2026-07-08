@@ -299,7 +299,8 @@ function executeIndividualWarningPdf(stdId) {
   const absentDaysStr = absentDays.join("፣ ");
 
   const element = document.createElement("div");
-  element.style.cssText = "position:fixed; left:-10000px; top:0; z-index:-1; background:#fff; width:210mm; padding:20mm; font-family:'Noto Ethiopic',sans-serif; color:#1e293b;";
+  element.className = "pdf-page-portrait pdf-exporting";
+  element.style.cssText = "position:fixed; left:-10000px; top:0; z-index:-1;";
 
   element.innerHTML = `
     <div style="text-align:center; margin-bottom:24px; border-bottom:2px solid #0f172a; padding-bottom:16px;">

@@ -1010,19 +1010,18 @@ h2 {
 .pdf-page-wrapper {
     background: white !important;
     color: black !important;
-    padding: 8mm 10mm !important;
-    width: 297mm;
-    height: 209mm;
-    /* Fix the height to exactly 209mm to eliminate extra blank pages */
     box-sizing: border-box;
     page-break-after: always;
-    margin-bottom: 25px;
-    /* Space between pages in preview */
+    break-after: always;
+    margin: 0 auto 25px auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    /* Premium paper shadow */
     position: relative;
-    overflow: hidden;
-    border-radius: 4px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 1000px;
+    min-height: auto;
+    padding: 20px !important;
+    overflow-x: auto;
 }
 
 .pdf-page-wrapper h1 {
@@ -1054,6 +1053,11 @@ h2 {
     text-align: center;
     font-size: 9.5px !important;
     color: black !important;
+}
+
+.pdf-table tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
 }
 
 .pdf-table th {
@@ -1134,6 +1138,16 @@ h2 {
     margin-bottom: 0 !important;
     box-shadow: none !important;
     border: none !important;
+    border-radius: 0 !important;
+}
+
+.pdf-exporting .pdf-page-wrapper.landscape-page {
+    width: 297mm !important;
+    height: 210mm !important;
+    padding: 8mm 10mm !important;
+    page-break-after: always !important;
+    break-after: always !important;
+    overflow: hidden !important;
 }
 
 /* Custom Premium Modal Overlay */
@@ -1628,12 +1642,28 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 15mm 12mm;
+    padding: 20px !important;
     gap: 15px;
-    -webkit-break-after: always;
+    font-family: var(--font);
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
     page-break-after: always;
     break-after: always;
-    font-family: var(--font);
+}
+
+.pdf-exporting .pdfMasterReport {
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 15mm 12mm !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-after: always !important;
+    break-after: always !important;
 }
 
 .horizontalLine {
@@ -1648,13 +1678,13 @@ h2 {
 .pdf-page-portrait {
     background: white !important;
     color: #0f172a !important;
-    padding: 15mm 15mm !important;
-    width: 210mm;
-    height: 297mm;
+    padding: 20px !important;
+    width: 100%;
+    max-width: 700px;
     box-sizing: border-box;
     page-break-after: always;
+    break-after: always;
     margin: 0 auto 25px auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
     border-radius: 4px;
@@ -1673,6 +1703,34 @@ h2 {
 .pdf-page-portrait th,
 .pdf-page-portrait li {
     color: #0f172a !important;
+}
+
+.pdf-exporting .pdf-page-portrait {
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 15mm 15mm !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-after: always !important;
+    break-after: always !important;
+}
+
+.pdf-page-portrait.pdf-exporting {
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 15mm 15mm !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.pdf-exporting .pdf-page-wrapper:last-child,
+.pdf-exporting .pdfMasterReport:last-child,
+.pdf-exporting .pdf-page-portrait:last-child,
+.pdf-page-portrait.pdf-exporting {
+    page-break-after: auto !important;
+    break-after: auto !important;
 }
 
 /* Floating Action Button (FAB) */

@@ -44,7 +44,7 @@ function renderMasterReportPreview() {
       );
 
       const page = document.createElement("div");
-      page.className = "pdf-page-wrapper";
+      page.className = "pdf-page-wrapper landscape-page";
 
       let rowsHtml = "";
       studentSlice.forEach((std, sIdx) => {
@@ -147,11 +147,11 @@ function executePdfGeneration() {
   const monthName = monthsEthiopic[state.selectedMonth];
 
   const opt = {
-    margin: 10,
+    margin: 0,
     filename: `Ibnu_Oumar_${monthName}_${year}_Attendance_Report.pdf`,
     image: { type: "jpeg", quality: 1.0 },
     html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     pagebreak: { mode: ["css", "legacy"] },
   };
 
@@ -211,43 +211,41 @@ function renderWarningReportPreview() {
     hasContent = true;
 
     const page = document.createElement("div");
-    page.className = "pdf-page-wrapper";
+    page.className = "pdfMasterReport";
 
-    // Build absent day details for each student
-    let rowsHtml = "";
-    warningStudents.forEach((std, idx) => {
-      const absentDays = [];
-      for (let d = 0; d < daysInMonth; d++) {
-        const status = getAttendanceStatus(std.id, year, monthIdx, d);
-        if (status === "X") absentDays.push(d + 1);
-      }
-      const absentDaysStr = absentDays.join("፣ ");
-      rowsHtml += `
-        <tr>
-          <td style="text-align:center;">${idx + 1}</td>
-          <td>${std.firstName} ${std.lastName}</td>
-          <td style="text-align:center; font-weight:bold; color:#dc2626;">${absentMap[std.id]}</td>
-          <td style="font-size:9px;">${absentDaysStr}</td>
-        </tr>`;
+    let studentListHtml = "";
+    warningStudents.forEach((std) => {
+      studentListHtml += `<li>${std.firstName} ${std.lastName} ${absentMap[std.id]} ቀን</li>`;
     });
 
     page.innerHTML = `
-      <div style="margin-bottom:14px;">
-        <h1 style="text-align:center; font-size:16px; margin:0 0 4px;">ኢብኑ ዑመር መድረሳ</h1>
-        <h2 style="text-align:center; font-size:13px; margin:0 0 4px; color:#dc2626;">የቀሪ ማስጠንቀቂያ ሪፖርት — ${monthName} ${year} ዓ.ም</h2>
-        <p style="font-size:11px; margin:0;">ኡስታዛ፦ <strong>${ins.firstName} ${ins.lastName}</strong></p>
+      <div>
+        <header style="color: rgb(78, 78, 78);">
+          <h3 style="text-align: center; font-size: 16px; font-weight: 700; margin: 0 0 5px 0;">ኢብኑ ዑመር መድረሳ በወርሃ ${monthName} ከ3 ቀን በላይ የቀሩ ተማሪዎች</h3>
+          <div class="horizontalLine"></div>
+        </header>
+
+        <main style="margin-top: 30px; display: flex; flex-direction: column; gap: 20px;">
+          <div>
+            <h4 style="font-size: 15px; font-weight: 700; margin: 0 0 10px 0;">ኡስታዛ ${ins.firstName} ${ins.lastName}</h4>
+            <ol style="margin: 15px 0px 0px 30px; line-height: 1.5; font-size: 14px;">
+              ${studentListHtml}
+            </ol>
+          </div>
+          <div>
+            <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 8px 0;">ማሳሰቢያ</h4>
+            <p style="line-height: 1.5; text-align: justify; margin: 0; font-size: 13.5px;">
+              እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር) በቀጥታ የሚመለከታቸው ይሆናል።
+              <br><br>
+              ህጉም በሚመለከታቸው አካላት እማካኝነት የሚፈፀም ይሆናል።
+            </p>
+          </div>
+        </main>
       </div>
-      <table class="pdf-table" style="width:100%;">
-        <thead>
-          <tr>
-            <th style="width:30px;">ተ.ቁ</th>
-            <th>ሙሉ ስም</th>
-            <th style="width:50px;">የቀሩ ቀናት</th>
-            <th>የቀሩባቸው ቀናት</th>
-          </tr>
-        </thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
+      <footer style="margin: 20px 10px 10px 10px; font-style: italic; color: grey;">
+        <div class="horizontalLine"></div>
+        <p style="margin: 0; text-align: center;">ኢብኑ ዑመር መድረሳ ወርሃዊ ረፖርት</p>
+      </footer>
     `;
     container.appendChild(page);
   });
@@ -277,7 +275,7 @@ function executeWarningPdfGeneration() {
   const monthName = monthsEthiopic[state.selectedMonth];
 
   const opt = {
-    margin: 10,
+    margin: 0,
     filename: `Warning_Report_${monthName}_${year}.pdf`,
     image: { type: "jpeg", quality: 1.0 },
     html2canvas: { scale: 2, useCORS: true },
