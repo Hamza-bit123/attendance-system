@@ -1,24 +1,28 @@
-﻿// -------------------------------------------------------------
+// -------------------------------------------------------------
 // የኢትዮጵያ ካላንደር መዋቅር መቼቶች (E.C Calendar Variables)
 // -------------------------------------------------------------
 const monthsEthiopic = [
-  "መስከረም",
-  "ጥቅምት",
-  "ህዳር",
-  "ታህሳስ",
-  "ጥር",
-  "የካቲት",
-  "መጋቢት",
-  "ሚያዝያ",
-  "ግንቦት",
-  "ሰኔ",
-  "ሐምሌ",
-  "ነሐሴ",
+  "መስከረም",  // 0
+  "ጥቅምት",   // 1
+  "ህዳር",     // 2
+  "ታህሳስ",   // 3
+  "ጥር",      // 4
+  "የካቲት",   // 5
+  "መጋቢት",   // 6
+  "ሚያዝያ",   // 7
+  "ግንቦት",   // 8
+  "ሰኔ",      // 9
+  "ሐምሌ",    // 10
+  "ነሐሴ",    // 11
+  "ጳጉሜ",   // 12
 ];
 
-// ለቀመር ማቅለያ የአሁኑን ወር "ሰኔ" (Index 9) እናደርገዋለን
-const CURRENT_MONTH_INDEX = 9;
-const DAYS_IN_MONTH = 30;
+// ዛሬ (Today) — computed dynamically from real system date
+const _todayGC = new Date();
+const _ecToday = toEthiopian(_todayGC.getFullYear(), _todayGC.getMonth() + 1, _todayGC.getDate());
+const TODAY_EC = { year: _ecToday[0], month: _ecToday[1] - 1, day: _ecToday[2] }; // month is 0-indexed
+
+const DAYS_IN_MONTH = 30; // for legacy compatibility
 const NO_CLASS_DAYS_STORAGE_KEY = "medresa_no_class_days";
 const WEEK_DAYS = [
   { index: 0, short: "እሁድ", label: "እሁድ" },
@@ -29,6 +33,33 @@ const WEEK_DAYS = [
   { index: 5, short: "አርብ", label: "አርብ" },
   { index: 6, short: "ቅዳሜ", label: "ቅዳሜ" },
 ];
+
+// Returns number of days in an EC month (year, 0-indexed monthIdx)
+function getDaysInECMonth(year, monthIdx) {
+  if (monthIdx === 12) { // ጳጉሜ (Pagume)
+    return (year % 4 === 3) ? 6 : 5;
+  }
+  return 30;
+}
+
+// Is the selected year/month the current (today's) month?
+function isCurrentMonth() {
+  return state.selectedYear === TODAY_EC.year && state.selectedMonth === TODAY_EC.month;
+}
+
+// Is the selected year/month before today's month?
+function isBeforeCurrentMonth() {
+  if (state.selectedYear < TODAY_EC.year) return true;
+  if (state.selectedYear === TODAY_EC.year && state.selectedMonth < TODAY_EC.month) return true;
+  return false;
+}
+
+// Is the selected year/month after today's month?
+function isAfterCurrentMonth() {
+  if (state.selectedYear > TODAY_EC.year) return true;
+  if (state.selectedYear === TODAY_EC.year && state.selectedMonth > TODAY_EC.month) return true;
+  return false;
+}
 
 // -------------------------------------------------------------
 // የካላንደር መለወጫ ረዳት ፈንክሽኖች (Calendar Converter Helpers)
@@ -126,25 +157,25 @@ function toEthiopian(year, month, date) {
   return [ethiopianYear, ethiopianMonth, ethiopianDate];
 }
 
-function getCurrentEthiopianDay() {
-  const todayGC = new Date();
-  const todayEC = toEthiopian(
-    todayGC.getFullYear(),
-    todayGC.getMonth() + 1,
-    todayGC.getDate(),
-  );
-  return todayEC[2];
+// Returns [year, month(1-indexed), day] for today (dynamic)
+function getFullDate() {
+  return [TODAY_EC.year, TODAY_EC.month + 1, TODAY_EC.day];
 }
 
+// Returns the current EC day number (dynamic, from real system date)
+function getCurrentEthiopianDay() {
+  return TODAY_EC.day;
+}
+
+// Returns a formatted string for today in Ethiopian calendar
+function getTodayDisplayString() {
+  return `${monthsEthiopic[TODAY_EC.month]} ${TODAY_EC.day}, ${TODAY_EC.year} ዓ.ም`;
+}
+
+// Gets the short weekday name for day d in the currently selected month
 function getDayNameShort(d) {
-  const todayGC = new Date();
-  const todayEC = toEthiopian(
-    todayGC.getFullYear(),
-    todayGC.getMonth() + 1,
-    todayGC.getDate(),
-  );
-  const ethYear = todayEC[0];
-  const ethMonth = CURRENT_MONTH_INDEX + 1; // Sene is 10
+  const ethYear = state.selectedYear;
+  const ethMonth = state.selectedMonth + 1; // 1-indexed
   const gregDateParts = toGregorian(ethYear, ethMonth, d);
   const dateGC = new Date(
     gregDateParts[0],
@@ -155,15 +186,24 @@ function getDayNameShort(d) {
   return dayNamesAmharic[dateGC.getDay()];
 }
 
-function getWeekdayIndexForMonthDay(d) {
-  const todayGC = new Date();
-  const todayEC = toEthiopian(
-    todayGC.getFullYear(),
-    todayGC.getMonth() + 1,
-    todayGC.getDate(),
+// Gets the single-letter weekday for day d in the selected month
+function getDayLetter(d) {
+  const ethYear = state.selectedYear;
+  const ethMonth = state.selectedMonth + 1;
+  const gregDateParts = toGregorian(ethYear, ethMonth, d);
+  const dateGC = new Date(
+    gregDateParts[0],
+    gregDateParts[1] - 1,
+    gregDateParts[2],
   );
-  const ethYear = todayEC[0];
-  const ethMonth = CURRENT_MONTH_INDEX + 1;
+  const dayLettersAmharic = ["እ", "ሰ", "ማ", "ረ", "ሐ", "አ", "ቅ"];
+  return dayLettersAmharic[dateGC.getDay()];
+}
+
+// Returns JS weekday index (0=Sun) for day d in the selected month
+function getWeekdayIndexForMonthDay(d) {
+  const ethYear = state.selectedYear;
+  const ethMonth = state.selectedMonth + 1;
   const gregDateParts = toGregorian(ethYear, ethMonth, d);
   const dateGC = new Date(
     gregDateParts[0],
@@ -201,9 +241,29 @@ function isNoClassDay(dayNumber) {
   return state.noClassDays.includes(getWeekdayIndexForMonthDay(dayNumber));
 }
 
+// A day is inactive if:
+// 1) It falls on a no-class weekday
+// 2) The selected year/month is strictly before the system's opening date (firstOpenedDate)
+// 3) It's the exact opening month/year, but the day is before the opening day
+//
+// NOTE: Past months (before today) that are ON OR AFTER the opening date are NOT inactive —
+// attendance can be viewed/corrected for those months.
 function getInactiveReason(dayNumber) {
   if (isNoClassDay(dayNumber)) return "no-class";
-  if (dayNumber < state.firstOpenedDay) return "before-open";
+
+  const fd = state.firstOpenedDate; // { year, month, day } — full EC date
+  const sy = state.selectedYear;
+  const sm = state.selectedMonth;
+
+  // Selected year is before opening year → entire month is before-open
+  if (sy < fd.year) return "before-open";
+
+  // Same year, but month is before opening month
+  if (sy === fd.year && sm < fd.month) return "before-open";
+
+  // Same year + month as opening: only days before the opening day are before-open
+  if (sy === fd.year && sm === fd.month && dayNumber < fd.day) return "before-open";
+
   return "";
 }
 
@@ -217,44 +277,28 @@ function getInactiveTooltip(dayNumber) {
     : "ይህ ቀን ሲስተሙ ከመከፈቱ በፊት የነበረ በመሆኑ መገኘት መቆጣጠር አይቻልም።";
 }
 
-function isMissedUncheckedDay(dayNumber, status, isTodayMonth, currentDay) {
-  return (
-    isTodayMonth &&
-    dayNumber < currentDay &&
-    !isInactiveDay(dayNumber) &&
-    !status
-  );
-}
-function getFullDate() {
-  const todayGC = new Date();
-  const todayEC = toEthiopian(
-    todayGC.getFullYear(),
-    todayGC.getMonth() + 1,
-    todayGC.getDate(),
-  );
-  const ethYear = todayEC[0];
-  return todayEC;
-}
-function getDayLetter(d) {
-  const todayGC = new Date();
-  const todayEC = toEthiopian(
-    todayGC.getFullYear(),
-    todayGC.getMonth() + 1,
-    todayGC.getDate(),
-  );
-  const ethYear = todayEC[0];
-  const ethMonth = CURRENT_MONTH_INDEX + 1;
-  const gregDateParts = toGregorian(ethYear, ethMonth, d);
-  const dateGC = new Date(
-    gregDateParts[0],
-    gregDateParts[1] - 1,
-    gregDateParts[2],
-  );
-  const dayLettersAmharic = ["እ", "ሰ", "ማ", "ረ", "ሐ", "አ", "ቅ"];
-  return dayLettersAmharic[dateGC.getDay()];
+// A day is "missed/unchecked" if it is a past day with no attendance recorded
+function isMissedUncheckedDay(dayNumber, status) {
+  if (status) return false;
+  if (isInactiveDay(dayNumber)) return false;
+  if (isAfterCurrentMonth()) return false;
+
+  if (isCurrentMonth()) {
+    return dayNumber < TODAY_EC.day;
+  }
+  // Past months: all active days count as missed if unchecked
+  if (isBeforeCurrentMonth()) return true;
+  return false;
 }
 
-// function getDayVerticalHtml(d) {
-//   const name = getDayNameShort(d); // e.g. "ማክሰኞ"
-//   //return name.split("").join("<br>");
-//   return name;
+// Is day a future day (cannot record attendance yet)?
+function isFutureDay(dayNumber) {
+  if (isAfterCurrentMonth()) return true;
+  if (isCurrentMonth() && dayNumber > TODAY_EC.day) return true;
+  return false;
+}
+
+// Is day the actual today?
+function isTodayDay(dayNumber) {
+  return isCurrentMonth() && dayNumber === TODAY_EC.day;
+}

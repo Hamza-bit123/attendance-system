@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------
+// -------------------------------------------------------------
 // ማስተር ስቴት ሞተር (System Master State Engine)
 // -------------------------------------------------------------
 const windows1252ByteMap = {
@@ -116,16 +116,62 @@ function loadStoredData(key, fallback) {
 let state = {
   instructors: loadStoredData("medresa_ins", []),
   students: loadStoredData("medresa_std", []),
-  attendance: loadStoredData("medresa_att", {}), // Key: stdId_monthIdx_dayIdx -> '✓', 'X', 'ፍ'
+  attendance: loadStoredData("medresa_att", {}),
   batchActive: false,
   batchTarget: 1,
   batchCount: 0,
-  activeContext: null, // { type: 'instructor'/'student', id: '...' }
+  activeContext: null,
   currentAttendanceInstructor: "",
   editingInstructorId: null,
   editingStudentId: null,
   noClassDays: getSavedNoClassDays(),
+  // Selected date for display — defaults to today's actual EC date
+  selectedYear: parseInt(localStorage.getItem("medresa_selected_year")) || TODAY_EC.year,
+  selectedMonth: localStorage.getItem("medresa_selected_month") !== null
+    ? parseInt(localStorage.getItem("medresa_selected_month"))
+    : TODAY_EC.month,
+  // firstOpenedDate: full EC date {year, month, day} when system was first used.
+  // Loaded from "medresa_first_opened_date" (new key).
+  // Falls back migrating the old "medresa_first_opened_day" bare-number key if present.
+  firstOpenedDate: (() => {
+    try {
+      const raw = localStorage.getItem("medresa_first_opened_date");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.year === "number" && typeof parsed.month === "number" && typeof parsed.day === "number") {
+          return parsed;
+        }
+      }
+    } catch (e) { /* ignore */ }
+    // No valid full-date stored yet — will be set by initFirstOpenedDay()
+    return { year: TODAY_EC.year, month: TODAY_EC.month, day: TODAY_EC.day };
+  })(),
 };
+
+function setSelectedDate(year, month) {
+  state.selectedYear = year;
+  state.selectedMonth = month;
+  localStorage.setItem("medresa_selected_year", year);
+  localStorage.setItem("medresa_selected_month", month);
+}
+
+
+function parseAttendanceKey(key) {
+  const parts = key.split("_");
+  if (parts.length >= 3) {
+    const dayIndex = parseInt(parts[parts.length - 1]);
+    const monthIndex = parseInt(parts[parts.length - 2]);
+    const possibleYear = parseInt(parts[parts.length - 3]);
+    if (!isNaN(possibleYear) && possibleYear >= 1000) {
+      const studentId = parts.slice(0, parts.length - 3).join("_");
+      return { studentId, year: possibleYear, monthIndex, dayIndex };
+    } else {
+      const studentId = parts.slice(0, parts.length - 2).join("_");
+      return { studentId, year: 2018, monthIndex, dayIndex };
+    }
+  }
+  return null;
+}
 
 // -------------------------------------------------------------
 // የኩስተም ፖፕአፕ ረዳቶች (Custom Dialog Helpers)

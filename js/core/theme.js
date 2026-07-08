@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------
+// -------------------------------------------------------------
 // ጭብጥ መቆጣጠሪያ ሞዱል (Theme Switcher Module)
 // -------------------------------------------------------------
 function initTheme() {
@@ -27,18 +27,4 @@ function setTheme(theme) {
     }
     localStorage.setItem("medresa_theme", "dark");
   }
-}
-
-function initFirstOpenedDay() {
-  if (!localStorage.getItem("medresa_first_opened_day")) {
-    const todayGC = new Date();
-    const todayEC = toEthiopian(
-      todayGC.getFullYear(),
-      todayGC.getMonth() + 1,
-      todayGC.getDate(),
-    );
-    localStorage.setItem("medresa_first_opened_day", todayEC[2]);
-  }
-  state.firstOpenedDay =
-    parseInt(localStorage.getItem("medresa_first_opened_day")) || 1;
 }

@@ -1,45 +1,55 @@
-﻿// -------------------------------------------------------------
+// -------------------------------------------------------------
 // 1. ዳሽቦርድ ሞዱል ቀመሮች (Dashboard Metrics Engine)
 // -------------------------------------------------------------
 function renderDashboard() {
-  document.getElementById("cardTotalStudents").innerText =
-    state.students.length;
-  document.getElementById("lblAbsent1").innerText =
-    `በ ወርሃ ${monthsEthiopic[CURRENT_MONTH_INDEX]} 1 ቀን የቀሩ ተማሪዎች ብዛት`;
-  document.getElementById("lblAbsent2").innerText =
-    `በ ወርሃ ${monthsEthiopic[CURRENT_MONTH_INDEX]} 2 ቀን የቀሩ ተማሪዎች ብዛት`;
-  document.getElementById("lblAbsent3").innerText =
-    `በ ወርሃ ${monthsEthiopic[CURRENT_MONTH_INDEX]} 3 ቀን የቀሩ ተማሪዎች ብዛት`;
+  const year = state.selectedYear;
+  const monthIdx = state.selectedMonth; // 0-indexed
+  const monthName = monthsEthiopic[monthIdx];
 
-  let absentMap = {}; // stdId -> count
+  document.getElementById("cardTotalStudents").innerText = state.students.length;
+  document.getElementById("lblAbsent1").innerText =
+    `በ ወርሃ ${monthName} 1 ቀን የቀሩ ተማሪዎች ብዛት`;
+  document.getElementById("lblAbsent2").innerText =
+    `በ ወርሃ ${monthName} 2 ቀን የቀሩ ተማሪዎች ብዛት`;
+  document.getElementById("lblAbsent3").innerText =
+    `በ ወርሃ ${monthName} 3 ቀን የቀሩ ተማሪዎች ብዛት`;
+
+  // Build absence map for selected year/month
+  let absentMap = {};
   state.students.forEach((s) => (absentMap[s.id] = 0));
 
-  // FIX: Parsing composite student IDs correctly by splitting from the right side of the attendance key
   Object.keys(state.attendance).forEach((key) => {
-    const lastUnderscore = key.lastIndexOf("_");
-    if (lastUnderscore !== -1) {
-      const secondLastUnderscore = key.lastIndexOf("_", lastUnderscore - 1);
-      if (secondLastUnderscore !== -1) {
-        const stdId = key.substring(0, secondLastUnderscore);
-        const mIdx = parseInt(
-          key.substring(secondLastUnderscore + 1, lastUnderscore),
-        );
-        const status = state.attendance[key];
+    const status = state.attendance[key];
+    if (status !== "X") return;
 
-        if (
-          mIdx === CURRENT_MONTH_INDEX &&
-          status === "X" &&
-          absentMap[stdId] !== undefined
-        ) {
-          absentMap[stdId]++;
+    const parts = key.split("_");
+    // New format: stdId_year_monthIdx_dayIdx (stdId may contain underscores)
+    // Try to parse from right
+    if (parts.length >= 4) {
+      const dayIdx = parseInt(parts[parts.length - 1]);
+      const mIdx = parseInt(parts[parts.length - 2]);
+      const yr = parseInt(parts[parts.length - 3]);
+
+      if (!isNaN(yr) && yr >= 1000) {
+        // New format
+        if (yr === year && mIdx === monthIdx) {
+          const stdId = parts.slice(0, parts.length - 3).join("_");
+          if (absentMap[stdId] !== undefined) absentMap[stdId]++;
         }
+        return;
+      }
+    }
+    // Legacy format: stdId_monthIdx_dayIdx
+    if (parts.length >= 3) {
+      const mIdx = parseInt(parts[parts.length - 2]);
+      if (mIdx === monthIdx) {
+        const stdId = parts.slice(0, parts.length - 2).join("_");
+        if (absentMap[stdId] !== undefined) absentMap[stdId]++;
       }
     }
   });
 
-  let c1 = 0,
-    c2 = 0,
-    c3 = 0;
+  let c1 = 0, c2 = 0, c3 = 0;
   let criticalStudents = [];
 
   state.students.forEach((s) => {
@@ -49,6 +59,7 @@ function renderDashboard() {
     else if (count >= 3) {
       c3++;
       criticalStudents.push({
+        id: s.id,
         name: `${s.firstName} ${s.lastName}`,
         count: count,
       });
@@ -59,7 +70,7 @@ function renderDashboard() {
   document.getElementById("cardAbsent2").innerText = c2;
   document.getElementById("cardAbsent3").innerText = c3;
 
-  // የአስጊ ተማሪዎች ዝርዝር ማሳያ (3 ቀን የቀሩ)
+  // Critical students list (3+ days absent)
   const listContainer = document.getElementById("dashCriticalAbsentList");
   listContainer.innerHTML = "";
   if (criticalStudents.length === 0) {
@@ -68,7 +79,7 @@ function renderDashboard() {
     let listHtml = "";
     criticalStudents.forEach((cs, idx) => {
       listHtml += `
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(120,120,120,0.1); align-items:center;">
+                <div onclick="showStudentDetails('${cs.id}')" style="display:flex; justify-content:space-between; padding:10px 12px; border-bottom:1px solid rgba(120,120,120,0.1); align-items:center; cursor:pointer; transition:var(--transition); border-radius:var(--radius-sm);" class="critical-student-row">
                     <span style="font-weight:600;">${idx + 1}. ⚠️ ${cs.name}</span>
                     <span class="batch-badge" style="background:var(--danger-bg); color:var(--danger); font-size:11px;">${cs.count} ቀናት</span>
                 </div>
@@ -77,7 +88,7 @@ function renderDashboard() {
     listContainer.innerHTML = listHtml;
   }
 
-  // የባር ቻርት ግንባታ በኡስታዛቶች መሠረት (Bar Chart Config)
+  // Bar chart by instructor
   const chartContainer = document.getElementById("barChartContainer");
   chartContainer.innerHTML = "";
 
@@ -115,4 +126,3 @@ function renderDashboard() {
   });
   chartContainer.innerHTML = chartHtml;
 }
-
