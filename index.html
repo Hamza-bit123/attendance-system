@@ -171,6 +171,11 @@
                 <!-- CSS Mosaic Art -->
                 <div class="mosaic-container">
                     <div class="mosaic-grid">
+                        <div class="mosaic-card card-pattern">
+                            <span class="mosaic-icon">📖</span>
+                            <h3>ቁርዓን ሂፍዝ</h3>
+                            <p>የቁርዓን ንባብ እና ሂፍዝ ክትትል ማስተባበሪያ</p>
+                        </div>
                         <div class="mosaic-card card-logo">
                             <div class="mosaic-logo-circle">
                                 <img src="assets/images/Ibnu Oumer Quran Memorization Medresa.png" alt="Ibnu Oumer Logo"
@@ -308,329 +313,281 @@
                         <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
                         <select class="form-control date-sel" id="warningYearSelect" style="width:110px;"></select>
                         <select class="form-control date-sel" id="warningMonthSelect" style="width:110px;"></select>
-                        <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ል</span>
+                        <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ም</span>
                     </div>
                 </div>
                 <div class="pdf-preview-container">
-                    <div id="warningPdfExportWrapper"
-                        style="width: 100%; min-height: 294mm; display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: space-between; padding: 15mm 5mm 10mm 5mm;">
-                        <div class="pdf-report-inner" style="width: 100%; height: 100%;">
-                            <div>
-                                <div class="pdf-official-header">
-                                    <h1>ኢብኑ ዑመር መድረሳ</h1>
-                                    <p class="subtitle">IBNU OUMER MEDRESA</p>
+                    <div id="warningPdfExportWrapper" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <!-- Dynamically populated by reports.js -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="dash-view" class="app-view">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                    <div>
+                        <h2 style="margin:0 0 2px;">አጠቃላይ የቀሪ ሁኔታ መቆጣጠሪያ ሰሌዳ</h2>
+                        <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
+                    </div>
+                    <div class="date-selector-bar">
+                        <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
+                        <select class="form-control date-sel" id="dashYearSelect" style="width:110px;"></select>
+                        <select class="form-control date-sel" id="dashMonthSelect" style="width:110px;"></select>
+                    </div>
+                </div>
+
+                <div class="dash-cards-grid">
+                    <div class="stat-card variant-1">
+                        <span class="stat-label">ጠቅላላ የተመዘገቡ ተማሪዎች ብዛት</span>
+                        <span class="stat-value" id="cardTotalStudents">0</span>
+                    </div>
+                    <div class="stat-card variant-2">
+                        <span class="stat-label" id="lblAbsent1">1 ቀን የቀሩ (በዚህ ወር)</span>
+                        <span class="stat-value" id="cardAbsent1">0</span>
+                    </div>
+                    <div class="stat-card variant-3">
+                        <span class="stat-label" id="lblAbsent2">2 ቀን የቀሩ (በዚህ ወር)</span>
+                        <span class="stat-value" id="cardAbsent2">0</span>
+                    </div>
+                    <div class="stat-card variant-4">
+                        <span class="stat-label" id="lblAbsent3">3 ቀንና ከዚያ በላይ የቀሩ</span>
+                        <span class="stat-value" id="cardAbsent3">0</span>
+                    </div>
+                </div>
+
+                <div class="dash-layout-split">
+                    <div class="card">
+                        <h3 style="font-size: 15px; font-weight:600;">የተማሪዎች መቅረት በኡስታዛቶች እይታ (የአሁኑ ወር)</h3>
+                        <div class="graph-container">
+                            <div class="bar-chart-row" id="barChartContainer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="display: flex; flex-direction: column;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:8px;">
+                            <h3 style="font-size: 14.5px; font-weight:600; color: var(--danger); margin:0;">3 ቀንና ከዚያ
+                                በላይ የቀሩ ተማሪዎች</h3>
+                            <button class="btn btn-secondary" id="btnGoToWarningReport"
+                                style="padding:4px 8px; font-size:11px; display:flex; align-items:center; gap:4px; border-radius:var(--radius-sm);">
+                                📄 ጠቅላላ ሪፖርት
+                            </button>
+                        </div>
+                        <div style="overflow-y:auto; flex:1; max-height: 220px;" id="dashCriticalAbsentList">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="attendance-view" class="app-view">
+                <div class="sticky-filter-head">
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                        <div>
+                            <h2 style="margin:0 0 2px;">ዕለታዊ ቀሪ መቆጣጠሪያ ሰሌዳ</h2>
+                            <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
+                        </div>
+                        <div class="date-selector-bar">
+                            <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
+                            <select class="form-control date-sel" id="attYearSelect" style="width:110px;"></select>
+                            <select class="form-control date-sel" id="attMonthSelect" style="width:110px;"></select>
+                            <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ም</span>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-bottom:16px; padding: 14px 20px;">
+                        <div
+                            style="display:flex; flex-wrap:wrap; gap:15px; align-items:center; justify-content:space-between;">
+                            <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
+                                <div>
+                                    <label style="font-weight:600; margin-right:8px; font-size:13px;">ኡስታዛ መምረጫ፦</label>
+                                    <select class="form-control" id="attendanceInstructorSelect"
+                                        style="width:180px; display:inline-block; padding:6px 12px;"></select>
                                 </div>
-
-                                <div class="pdf-meta-grid">
-                                    <div>
-                                        <span class="label">የሪፖርት ዓይነት፦</span>
-                                        <span class="value">የቀሪ ማስጠንቀቂያ ጠቅላላ ሪፖርት</span>
-                                    </div>
-
-                                    <div>
-                                        <span class="label">የሪፖርት ወር፦</span>
-                                        <span class="value" id="reportDate">መስከረም 1900ዓ.ል</span>
-                                    </div>
-                                    <div>
-                                        <span class="label">የተዘጋጀበት ቀን፦</span>
-                                        <span class="value" id="prepDate">00/00/0000</span>
-                                    </div>
-                                </div>
-
-                                <h3
-                                    style="font-size: 13px; font-weight: 700; color: #064e3b; margin: 15px 0 8px 0; font-family: var(--font); text-align: left;">
-                                    ከ3 ቀን በላይ የቀሩ ተማሪዎች ዝርዝር</h3>
-
-                                <div id="pdf-warning-table">
-
-                                </div>
-
-
-                                <div class="pdf-policy-box">
-                                    <h4>⚠️ ማሳሰቢያ</h4>
-                                    <p id="notice">
-                                        እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ል 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ
-                                        ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ
-                                        በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ) በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት
-                                        አማካኝነት የሚፈፀም ይሆናል።
-                                    </p>
+                                <button class="btn btn-secondary" id="btnMarkAllPresent"
+                                    style="padding:6px 12px; font-size:12.5px;">✓ ሁሉንም መጣ በል</button>
+                            </div>
+                            <div class="attendance-legend">
+                                <div class="legend-item"><span class="legend-dot present"></span> <span>መጣ</span></div>
+                                <div class="legend-item"><span class="legend-dot absent"></span> <span>ቀረ</span></div>
+                                <div class="legend-item"><span class="legend-dot permission"></span> <span>ፍቃድ</span>
                                 </div>
                             </div>
-
-                            <p
-                                style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
-                                — ኢብኑ ዑመር መድረሳ ወርሃዊ የቀሪ ሪፖርት —
-                            </p>
                         </div>
                     </div>
                 </div>
-    </div>
-    </section>
+                <div class="table-responsive" id="attendanceMatrixContainer" style="max-height:60vh;">
+                </div>
+            </section>
 
-    <section id="dash-view" class="app-view">
-        <div
-            style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
-            <div>
-                <h2 style="margin:0 0 2px;">አጠቃላይ የቀሪ ሁኔታ መቆጣጠሪያ ሰሌዳ</h2>
-                <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
-            </div>
-            <div class="date-selector-bar">
-                <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
-                <select class="form-control date-sel" id="dashYearSelect" style="width:110px;"></select>
-                <select class="form-control date-sel" id="dashMonthSelect" style="width:110px;"></select>
-            </div>
-        </div>
-
-        <div class="dash-cards-grid">
-            <div class="stat-card variant-1">
-                <span class="stat-label">ጠቅላላ የተመዘገቡ ተማሪዎች ብዛት</span>
-                <span class="stat-value" id="cardTotalStudents">0</span>
-            </div>
-            <div class="stat-card variant-2">
-                <span class="stat-label" id="lblAbsent1">1 ቀን የቀሩ (በዚህ ወር)</span>
-                <span class="stat-value" id="cardAbsent1">0</span>
-            </div>
-            <div class="stat-card variant-3">
-                <span class="stat-label" id="lblAbsent2">2 ቀን የቀሩ (በዚህ ወር)</span>
-                <span class="stat-value" id="cardAbsent2">0</span>
-            </div>
-            <div class="stat-card variant-4">
-                <span class="stat-label" id="lblAbsent3">3 ቀንና ከዚያ በላይ የቀሩ</span>
-                <span class="stat-value" id="cardAbsent3">0</span>
-            </div>
-        </div>
-
-        <div class="dash-layout-split">
-            <div class="card">
-                <h3 style="font-size: 15px; font-weight:600;">የተማሪዎች መቅረት በኡስታዛቶች እይታ (የአሁኑ ወር)</h3>
-                <div class="graph-container">
-                    <div class="bar-chart-row" id="barChartContainer">
-                    </div>
-                </div>
-            </div>
-            <div class="card" style="display: flex; flex-direction: column;">
-                <div
-                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:8px;">
-                    <h3 style="font-size: 14.5px; font-weight:600; color: var(--danger); margin:0;">3 ቀንና ከዚያ
-                        በላይ የቀሩ ተማሪዎች</h3>
-                    <button class="btn btn-secondary" id="btnGoToWarningReport"
-                        style="padding:4px 8px; font-size:11px; display:flex; align-items:center; gap:4px; border-radius:var(--radius-sm);">
-                        📄 ጠቅላላ ሪፖርት
-                    </button>
-                </div>
-                <div style="overflow-y:auto; flex:1; max-height: 220px;" id="dashCriticalAbsentList">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="attendance-view" class="app-view">
-        <div class="sticky-filter-head">
-            <div
-                style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-                <div>
-                    <h2 style="margin:0 0 2px;">ዕለታዊ ቀሪ መቆጣጠሪያ ሰሌዳ</h2>
-                    <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
-                </div>
-                <div class="date-selector-bar">
-                    <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
-                    <select class="form-control date-sel" id="attYearSelect" style="width:110px;"></select>
-                    <select class="form-control date-sel" id="attMonthSelect" style="width:110px;"></select>
-                    <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ል</span>
-                </div>
-            </div>
-            <div class="card" style="margin-bottom:16px; padding: 14px 20px;">
-                <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center; justify-content:space-between;">
-                    <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
+            <section id="preview-view" class="app-view">
+                <div class="sticky-filter-head">
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:12px;">
                         <div>
-                            <label style="font-weight:600; margin-right:8px; font-size:13px;">ኡስታዛ መምረጫ፦</label>
-                            <select class="form-control" id="attendanceInstructorSelect"
-                                style="width:180px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
+                            <h2 style="margin:0 0 2px;">የቀሪ ሁኔታ ሪፖርት ቅድመ-እይታ</h2>
+                            <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
                         </div>
-                        <button class="btn btn-secondary" id="btnMarkAllPresent"
-                            style="padding:6px 12px; font-size:12.5px;">✓ ሁሉንም መጣ በል</button>
+                        <button class="btn btn-primary" id="btnDownloadPdf"><span style="font-size:16px;">📥</span>
+                            የፒዲኤፍ ማውረጃ</button>
                     </div>
-                    <div class="attendance-legend">
-                        <div class="legend-item"><span class="legend-dot present"></span> <span>መጣ</span></div>
-                        <div class="legend-item"><span class="legend-dot absent"></span> <span>ቀረ</span></div>
-                        <div class="legend-item"><span class="legend-dot permission"></span> <span>ፍቃድ</span>
+                    <div class="date-selector-bar" style="margin-bottom:12px;">
+                        <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
+                        <select class="form-control date-sel" id="previewYearSelect" style="width:110px;"></select>
+                        <select class="form-control date-sel" id="previewMonthSelect" style="width:110px;"></select>
+                        <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ም</span>
+                        <div style="display:flex; align-items:center; gap:8px; margin-left:auto;">
+                            <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
+                            <select class="form-control" id="previewInstructorFilter"
+                                style="width:180px; display:inline-block; padding:6px 12px;"></select>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="table-responsive" id="attendanceMatrixContainer" style="max-height:60vh;">
-        </div>
-    </section>
-
-    <section id="preview-view" class="app-view">
-        <div class="sticky-filter-head">
-            <div
-                style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:12px;">
-                <div>
-                    <h2 style="margin:0 0 2px;">የቀሪ ሁኔታ ሪፖርት ቅድመ-እይታ</h2>
-                    <span class="today-subtitle" style="font-size:12px; color:var(--text-muted);">ዛሬ፤ —</span>
+                <div class="pdf-preview-container">
+                    <div id="pdfExportWrapper"
+                        style="display:inline-block; width:max-content; background:white; border-radius:4px;">
+                    </div>
                 </div>
-                <button class="btn btn-primary" id="btnDownloadPdf"><span style="font-size:16px;">📥</span>
-                    የፒዲኤፍ ማውረጃ</button>
-            </div>
-            <div class="date-selector-bar" style="margin-bottom:12px;">
-                <span class="date-selector-label">📅 ወር ይምረጡ፦</span>
-                <select class="form-control date-sel" id="previewYearSelect" style="width:110px;"></select>
-                <select class="form-control date-sel" id="previewMonthSelect" style="width:110px;"></select>
-                <span class="today-badge">ዛሬ፦ ሰኔ 12, 2018 ዓ.ል</span>
-                <div style="display:flex; align-items:center; gap:8px; margin-left:auto;">
-                    <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
-                    <select class="form-control" id="previewInstructorFilter"
-                        style="width:180px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
-                </div>
-            </div>
-        </div>
-        <div class="pdf-preview-container">
-            <div id="pdfExportWrapper"
-                style="width:100%; max-width:100%; background:white; border-radius:4px; overflow-x:auto;">
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section id="settings-view" class="app-view">
-        <h2>ቅንብሮች</h2>
-        <div class="card settings-card">
-            <form id="settingsForm">
-                <div class="settings-section">
+            <section id="settings-view" class="app-view">
+                <h2>ቅንብሮች</h2>
+                <div class="card settings-card">
+                    <form id="settingsForm">
+                        <div class="settings-section">
+                            <div>
+                                <h3>ትምህርት የሌለባቸው የሳምንት ቀናት</h3>
+                                <p>ትምህርት የማይኖርባቸውን የሳምንት ቀናት ይምረጡ። እነዚህ ቀናት በመመዝገቢያ፣ በቅድመ እይታ እና በፒዲኤፍ ሪፖርት ላይ ዝግ ይሆናሉ።
+                                </p>
+                            </div>
+                            <div class="weekday-grid" aria-label="ትምህርት የሌለባቸው የሳምንት ቀናት">
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay1" value="1">
+                                    <span>ሰኞ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay2" value="2">
+                                    <span>ማክሰኞ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay3" value="3">
+                                    <span>ረቡዕ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay4" value="4">
+                                    <span>ሐሙስ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay5" value="5">
+                                    <span>አርብ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay6" value="6">
+                                    <span>ቅዳሜ</span>
+                                </label>
+                                <label class="weekday-option">
+                                    <input type="checkbox" id="noClassDay0" value="0">
+                                    <span>እሁድ</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">ቅንብሮችን አስቀምጥ</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="instructor-reg-view" class="app-view">
+                <h2 id="instructorRegHeader">አዲስ ኡስታዛ መመዝገቢያ ፎርም</h2>
+                <div class="card" style="max-width: 550px;">
+                    <form id="instructorRegForm">
+                        <div class="form-group">
+                            <label>የመጀመሪያ ስም *</label>
+                            <input type="text" id="insFirstName" class="form-control" required placeholder="ለምሳሌ፦ ጀሚላ">
+                        </div>
+                        <div class="form-group">
+                            <label>የአባት ስም * (ከሌለ አይታወቅም ይበሉ)</label>
+                            <input type="text" id="insLastName" class="form-control" required value="አይታወቅም">
+                        </div>
+                        <div class="form-group">
+                            <label>የስልክ ቁጥር *</label>
+                            <input type="tel" id="insPhone" class="form-control" required placeholder="09...">
+                        </div>
+                        <div style="display:flex; gap:12px; margin-top:10px;">
+                            <button type="submit" id="btnInstructorSubmit" class="btn btn-primary" style="flex:1;">ኡስታዛ
+                                መዝግብ</button>
+                            <button type="button" id="btnInstructorCancel" class="btn btn-secondary"
+                                style="display:none;" onclick="cancelInstructorEdit()">ሰርዝ</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section id="instructor-manage-view" class="app-view">
+                <h2>የኡስታዛቶች አጠቃላይ መረጃ ማውጫ</h2>
+                <div class="table-responsive">
+                    <table class="app-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">ተ.ቁ</th>
+                                <th>ሙሉ ስም</th>
+                                <th>የስልክ ቁጥር</th>
+                                <th style="width:80px;">ተግባር</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instructorTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="student-reg-view" class="app-view">
+                <div class="batch-control-wrapper" id="studentBatchControlWrapper">
+                    <h2 style="margin:0; font-size:18px;">አዲስ ተማሪ መመዝገቢያ ፎርም</h2>
                     <div>
-                        <h3>ትምህርት የሌለባቸው የሳምንት ቀናት</h3>
-                        <p>ትምህርት የማይኖርባቸውን የሳምንት ቀናት ይምረጡ። እነዚህ ቀናት በመመዝገቢያ፣ በቅድመ እይታ እና በፒዲኤፍ ሪፖርት ላይ ዝግ ይሆናሉ።
-                        </p>
-                    </div>
-                    <div class="weekday-grid" aria-label="ትምህርት የሌለባቸው የሳምንት ቀናት">
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay1" value="1">
-                            <span>ሰኞ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay2" value="2">
-                            <span>ማክሰኞ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay3" value="3">
-                            <span>ረቡዕ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay4" value="4">
-                            <span>ሐሙስ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay5" value="5">
-                            <span>አርብ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay6" value="6">
-                            <span>ቅዳሜ</span>
-                        </label>
-                        <label class="weekday-option">
-                            <input type="checkbox" id="noClassDay0" value="0">
-                            <span>እሁድ</span>
-                        </label>
+                        <label style="font-size:12.5px; font-weight:700;">ተከታታይ ምዝገባ፦ </label>
+                        <select class="form-control" id="batchLimitSelect"
+                            style="width:75px; display:inline-block; padding:4px 8px; margin-left:6px;">
+                            <option value="1">ነጠላ</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                        <span class="batch-badge" id="batchCounterIndicator">ነጠላ ሞድ</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">ቅንብሮችን አስቀምጥ</button>
-            </form>
-        </div>
-    </section>
 
-    <section id="instructor-reg-view" class="app-view">
-        <h2 id="instructorRegHeader">አዲስ ኡስታዛ መመዝገቢያ ፎርም</h2>
-        <div class="card" style="max-width: 550px;">
-            <form id="instructorRegForm">
-                <div class="form-group">
-                    <label>የመጀመሪያ ስም *</label>
-                    <input type="text" id="insFirstName" class="form-control" required placeholder="ለምሳሌ፦ ጀሚላ">
+                <div id="studentFormContainer">
                 </div>
-                <div class="form-group">
-                    <label>የአባት ስም * (ከሌለ አይታወቅም ይበሉ)</label>
-                    <input type="text" id="insLastName" class="form-control" required value="አይታወቅም">
+            </section>
+
+            <section id="student-manage-view" class="app-view">
+                <div class="sticky-filter-head">
+                    <div
+                        style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
+                        <h2 style="margin:0;">የተማሪዎች አጠቃላይ መረጃ ማውጫ</h2>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
+                            <select class="form-control" id="studentInstructorFilter"
+                                style="width:200px; display:inline-block; padding:6px 12px;"></select>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>የስልክ ቁጥር *</label>
-                    <input type="tel" id="insPhone" class="form-control" required placeholder="09...">
+                <div class="table-responsive">
+                    <table class="app-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">ተ.ቁ</th>
+                                <th>ተማሪ ሙሉ ስም</th>
+                                <th>የስልክ ቁጥር</th>
+                                <th>የተመደበችበት ኡስታዛ</th>
+                                <th style="width:80px;">ተግባር</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
                 </div>
-                <div style="display:flex; gap:12px; margin-top:10px;">
-                    <button type="submit" id="btnInstructorSubmit" class="btn btn-primary" style="flex:1;">ኡስታዛ
-                        መዝግብ</button>
-                    <button type="button" id="btnInstructorCancel" class="btn btn-secondary" style="display:none;"
-                        onclick="cancelInstructorEdit()">ሰርዝ</button>
-                </div>
-            </form>
-        </div>
-    </section>
+            </section>
 
-    <section id="instructor-manage-view" class="app-view">
-        <h2>የኡስታዛቶች አጠቃላይ መረጃ ማውጫ</h2>
-        <div class="table-responsive">
-            <table class="app-table">
-                <thead>
-                    <tr>
-                        <th style="width:60px;">ተ.ቁ</th>
-                        <th>ሙሉ ስም</th>
-                        <th>የስልክ ቁጥር</th>
-                        <th style="width:80px;">ተግባር</th>
-                    </tr>
-                </thead>
-                <tbody id="instructorTableBody"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="student-reg-view" class="app-view">
-        <div class="batch-control-wrapper" id="studentBatchControlWrapper">
-            <h2 style="margin:0; font-size:18px;">አዲስ ተማሪ መመዝገቢያ ፎርም</h2>
-            <div>
-                <label style="font-size:12.5px; font-weight:700;">ተከታታይ ምዝገባ፦ </label>
-                <select class="form-control" id="batchLimitSelect"
-                    style="width:75px; display:inline-block; padding:4px 8px; margin-left:6px;">
-                    <option value="1">ነጠላ</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                </select>
-                <span class="batch-badge" id="batchCounterIndicator">ነጠላ ሞድ</span>
-            </div>
-        </div>
-
-        <div id="studentFormContainer">
-        </div>
-    </section>
-
-    <section id="student-manage-view" class="app-view">
-        <div class="sticky-filter-head">
-            <div
-                style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px;">
-                <h2 style="margin:0;">የተማሪዎች አጠቃላይ መረጃ ማውጫ</h2>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
-                    <select class="form-control" id="studentInstructorFilter"
-                        style="width:200px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
-                </div>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="app-table">
-                <thead>
-                    <tr>
-                        <th style="width:60px;">ተ.ቁ</th>
-                        <th>ተማሪ ሙሉ ስም</th>
-                        <th>የስልክ ቁጥር</th>
-                        <th>የተመደበችበት ኡስታዛ</th>
-                        <th style="width:80px;">ተግባር</th>
-                    </tr>
-                </thead>
-                <tbody id="studentTableBody"></tbody>
-            </table>
-        </div>
-    </section>
-
-    </main>
+        </main>
     </div>
 
     <div class="dropdown-menu" id="actionDropdownDeck">

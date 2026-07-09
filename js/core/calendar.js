@@ -2,33 +2,25 @@
 // የኢትዮጵያ ካላንደር መዋቅር መቼቶች (E.C Calendar Variables)
 // -------------------------------------------------------------
 const monthsEthiopic = [
-  "መስከረም", // 0
-  "ጥቅምት", // 1
-  "ህዳር", // 2
-  "ታህሳስ", // 3
-  "ጥር", // 4
-  "የካቲት", // 5
-  "መጋቢት", // 6
-  "ሚያዝያ", // 7
-  "ግንቦት", // 8
-  "ሰኔ", // 9
-  "ሐምሌ", // 10
-  "ነሐሴ", // 11
-  "ጳጉሜ", // 12
+  "መስከረም",  // 0
+  "ጥቅምት",   // 1
+  "ህዳር",     // 2
+  "ታህሳስ",   // 3
+  "ጥር",      // 4
+  "የካቲት",   // 5
+  "መጋቢት",   // 6
+  "ሚያዝያ",   // 7
+  "ግንቦት",   // 8
+  "ሰኔ",      // 9
+  "ሐምሌ",    // 10
+  "ነሐሴ",    // 11
+  "ጳጉሜ",   // 12
 ];
 
 // ዛሬ (Today) — computed dynamically from real system date
 const _todayGC = new Date();
-const _ecToday = toEthiopian(
-  _todayGC.getFullYear(),
-  _todayGC.getMonth() + 1,
-  _todayGC.getDate(),
-);
-const TODAY_EC = {
-  year: _ecToday[0],
-  month: _ecToday[1] - 1,
-  day: _ecToday[2],
-}; // month is 0-indexed
+const _ecToday = toEthiopian(_todayGC.getFullYear(), _todayGC.getMonth() + 1, _todayGC.getDate());
+const TODAY_EC = { year: _ecToday[0], month: _ecToday[1] - 1, day: _ecToday[2] }; // month is 0-indexed
 
 const DAYS_IN_MONTH = 30; // for legacy compatibility
 const NO_CLASS_DAYS_STORAGE_KEY = "medresa_no_class_days";
@@ -44,40 +36,28 @@ const WEEK_DAYS = [
 
 // Returns number of days in an EC month (year, 0-indexed monthIdx)
 function getDaysInECMonth(year, monthIdx) {
-  if (monthIdx === 12) {
-    // ጳጉሜ (Pagume)
-    return year % 4 === 3 ? 6 : 5;
+  if (monthIdx === 12) { // ጳጉሜ (Pagume)
+    return (year % 4 === 3) ? 6 : 5;
   }
   return 30;
 }
 
 // Is the selected year/month the current (today's) month?
 function isCurrentMonth() {
-  return (
-    state.selectedYear === TODAY_EC.year &&
-    state.selectedMonth === TODAY_EC.month
-  );
+  return state.selectedYear === TODAY_EC.year && state.selectedMonth === TODAY_EC.month;
 }
 
 // Is the selected year/month before today's month?
 function isBeforeCurrentMonth() {
   if (state.selectedYear < TODAY_EC.year) return true;
-  if (
-    state.selectedYear === TODAY_EC.year &&
-    state.selectedMonth < TODAY_EC.month
-  )
-    return true;
+  if (state.selectedYear === TODAY_EC.year && state.selectedMonth < TODAY_EC.month) return true;
   return false;
 }
 
 // Is the selected year/month after today's month?
 function isAfterCurrentMonth() {
   if (state.selectedYear > TODAY_EC.year) return true;
-  if (
-    state.selectedYear === TODAY_EC.year &&
-    state.selectedMonth > TODAY_EC.month
-  )
-    return true;
+  if (state.selectedYear === TODAY_EC.year && state.selectedMonth > TODAY_EC.month) return true;
   return false;
 }
 
@@ -189,7 +169,7 @@ function getCurrentEthiopianDay() {
 
 // Returns a formatted string for today in Ethiopian calendar
 function getTodayDisplayString() {
-  return `${monthsEthiopic[TODAY_EC.month]} ${TODAY_EC.day}, ${TODAY_EC.year} ዓ.ል`;
+  return `${monthsEthiopic[TODAY_EC.month]} ${TODAY_EC.day}, ${TODAY_EC.year} ዓ.ም`;
 }
 
 // Gets the short weekday name for day d in the currently selected month
@@ -282,8 +262,7 @@ function getInactiveReason(dayNumber) {
   if (sy === fd.year && sm < fd.month) return "before-open";
 
   // Same year + month as opening: only days before the opening day are before-open
-  if (sy === fd.year && sm === fd.month && dayNumber < fd.day)
-    return "before-open";
+  if (sy === fd.year && sm === fd.month && dayNumber < fd.day) return "before-open";
 
   return "";
 }
@@ -326,9 +305,6 @@ function isTodayDay(dayNumber) {
 
 // Detect mobile device to scale down canvas sizes and avoid memory exhaustion
 function getPdfScale() {
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
-    );
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   return isMobile ? 1.0 : 2.0;
 }
