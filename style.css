@@ -900,9 +900,11 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 20px;
     background: var(--bg-card);
-    padding: 12px 20px;
+    padding: 12px 16px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
 }
@@ -1130,7 +1132,100 @@ h2 {
     }
 
     .home-color-rules {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    /* Attendance filter bar responsive */
+    #attendanceInstructorSelect {
+        width: 100% !important;
+        max-width: 220px;
+    }
+
+    /* Student manage filter responsive */
+    #studentInstructorFilter,
+    #previewInstructorFilter {
+        width: 100% !important;
+        max-width: 220px;
+    }
+
+    /* Preview PDF wrapper - prevent horizontal overflow */
+    #pdfExportWrapper {
+        width: 100% !important;
+        max-width: 100%;
+        overflow-x: auto;
+        display: block !important;
+    }
+
+    /* PDF warning wrapper responsive */
+    #warningPdfExportWrapper {
+        width: 100% !important;
+        padding: 8px 4px !important;
+    }
+
+    /* Home title bigger on landscape tablet */
+    .home-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .home-color-rules {
         grid-template-columns: 1fr !important;
+    }
+
+    .home-title {
+        font-size: 20px;
+    }
+
+    .home-subtitle {
+        font-size: 13px;
+    }
+
+    .mosaic-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Batch registration header stacks vertically */
+    .batch-control-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Attendance control bar stacks */
+    #attendanceInstructorSelect {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+
+    /* Make select dropdowns full width in filter card */
+    .card select.form-control {
+        max-width: 100%;
+    }
+
+    /* dash header stacks on very small screens */
+    .dash-cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Warning report PDF preview on mobile */
+    .pdf-preview-container {
+        padding: 16px 8px;
+    }
+
+    /* Weekday grid for settings on small phones */
+    .weekday-grid {
+        grid-template-columns: repeat(4, minmax(46px, 1fr));
+    }
+
+    /* Section title smaller */
+    .section-title {
+        font-size: 16px;
     }
 }
 
@@ -1238,26 +1333,27 @@ h2 {
 /* Home View Layout Styles */
 .home-hero {
     text-align: center;
-    padding: 40px 20px;
+    padding: 28px 16px;
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     box-shadow: var(--shadow);
 }
 
 .home-title {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--text-main);
     margin-bottom: 8px;
+    word-break: break-word;
 }
 
 .home-subtitle {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--primary);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1265,7 +1361,7 @@ h2 {
 .home-desc {
     max-width: 650px;
     margin: 0 auto;
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.6;
     color: var(--text-muted);
 }

@@ -313,7 +313,7 @@
                 </div>
                 <div class="pdf-preview-container">
                     <div id="warningPdfExportWrapper"
-                        style="width: 210; height: 294mm; display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: space-between; padding: 15mm 5mm 10mm 5mm;">
+                        style="width: 100%; min-height: 294mm; display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: space-between; padding: 15mm 5mm 10mm 5mm;">
                         <div class="pdf-report-inner" style="width: 100%; height: 100%;">
                             <div>
                                 <div class="pdf-official-header">
@@ -445,7 +445,7 @@
                         <div>
                             <label style="font-weight:600; margin-right:8px; font-size:13px;">ኡስታዛ መምረጫ፦</label>
                             <select class="form-control" id="attendanceInstructorSelect"
-                                style="width:180px; display:inline-block; padding:6px 12px;"></select>
+                                style="width:180px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
                         </div>
                         <button class="btn btn-secondary" id="btnMarkAllPresent"
                             style="padding:6px 12px; font-size:12.5px;">✓ ሁሉንም መጣ በል</button>
@@ -482,13 +482,13 @@
                 <div style="display:flex; align-items:center; gap:8px; margin-left:auto;">
                     <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
                     <select class="form-control" id="previewInstructorFilter"
-                        style="width:180px; display:inline-block; padding:6px 12px;"></select>
+                        style="width:180px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
                 </div>
             </div>
         </div>
         <div class="pdf-preview-container">
             <div id="pdfExportWrapper"
-                style="display:inline-block; width:max-content; background:white; border-radius:4px;">
+                style="width:100%; max-width:100%; background:white; border-radius:4px; overflow-x:auto;">
             </div>
         </div>
     </section>
@@ -610,7 +610,7 @@
                 <div style="display:flex; align-items:center; gap:8px;">
                     <label style="font-weight:600; font-size:13px; white-space:nowrap;">ኡስታዛ ማጣሪያ፦</label>
                     <select class="form-control" id="studentInstructorFilter"
-                        style="width:200px; display:inline-block; padding:6px 12px;"></select>
+                        style="width:200px; max-width:100%; display:inline-block; padding:6px 12px;"></select>
                 </div>
             </div>
         </div>
