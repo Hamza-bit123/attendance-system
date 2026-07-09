@@ -206,7 +206,10 @@ function showStudentDetails(stdId) {
   const daysInMonth = getDaysInECMonth(year, monthIdx);
 
   // Build attendance summary for selected month
-  let presentCount = 0, absentCount = 0, permissionCount = 0, missedCount = 0;
+  let presentCount = 0,
+    absentCount = 0,
+    permissionCount = 0,
+    missedCount = 0;
   let dayRows = "";
 
   for (let d = 0; d < daysInMonth; d++) {
@@ -222,19 +225,34 @@ function showStudentDetails(stdId) {
 
     if (isInactive) continue; // skip no-class / before-open days
 
-    let statusLabel = "", statusColor = "var(--text-muted)", bgColor = "";
+    let statusLabel = "",
+      statusColor = "var(--text-muted)",
+      bgColor = "";
     if (status === "✓") {
-      statusLabel = "✓ መጣ"; statusColor = "#10b981"; presentCount++;
+      statusLabel = "✓ መጣ";
+      statusColor = "#10b981";
+      presentCount++;
     } else if (status === "X") {
-      statusLabel = "✕ ቀረ"; statusColor = "#ef4444"; bgColor = "rgba(239,68,68,0.08)"; absentCount++;
+      statusLabel = "✕ ቀረ";
+      statusColor = "#ef4444";
+      bgColor = "rgba(239,68,68,0.08)";
+      absentCount++;
     } else if (status === "Ref") {
-      statusLabel = "ፍ ፍቃድ"; statusColor = "#f59e0b"; bgColor = "rgba(245,158,11,0.08)"; permissionCount++;
+      statusLabel = "ፍ ፍቃድ";
+      statusColor = "#f59e0b";
+      bgColor = "rgba(245,158,11,0.08)";
+      permissionCount++;
     } else if (isMissed) {
-      statusLabel = "! ሳይሞላ"; statusColor = "#dc2626"; bgColor = "rgba(239,68,68,0.05)"; missedCount++;
+      statusLabel = "! ሳይሞላ";
+      statusColor = "#dc2626";
+      bgColor = "rgba(239,68,68,0.05)";
+      missedCount++;
     } else if (isFuture) {
-      statusLabel = "— ያልደረሰ"; statusColor = "var(--text-muted)";
+      statusLabel = "— ያልደረሰ";
+      statusColor = "var(--text-muted)";
     } else {
-      statusLabel = "—"; statusColor = "var(--text-muted)";
+      statusLabel = "—";
+      statusColor = "var(--text-muted)";
     }
 
     dayRows += `
@@ -294,7 +312,10 @@ async function executeIndividualWarningPdf(stdId) {
     const key = `${std.id}_${year}_${monthIdx}_${d}`;
     const legacyKey = `${std.id}_${monthIdx}_${d}`;
     const status = state.attendance[key] || state.attendance[legacyKey] || "";
-    if (status === "X") { absentDays.push(d + 1); absentCount++; }
+    if (status === "X") {
+      absentDays.push(d + 1);
+      absentCount++;
+    }
   }
   const absentDaysStr = absentDays.join("፣ ");
 
@@ -336,13 +357,13 @@ async function executeIndividualWarningPdf(stdId) {
 
         <div style="margin-bottom: 12px; line-height: 1.65; font-size: 12.5px; text-align: justify; color: #374151; font-family: var(--font);">
           <p style="margin: 0 0 10px 0;">
-            በመድረሳው የቀሪ መቆጣጠሪያ መረጃ መሠረት፣ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong>
-            ያለፈቃድ <strong style="color:#dc2626;">${absentCount} ቀን</strong> ቀርተዋል።
-            ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong>።` : ""}
+            በመድረሳው የቀሪ መቆጣጠሪያ መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong>
+            ያለፈቃድ <strong style="color:#dc2626;">${absentCount} ቀን</strong> ቀርተሻል።
+            ${absentDays.length > 0 ? `የቀረሽባቸው ቀናት ${monthName} ( <strong>${absentDaysStr})</strong> ናቸው።` : ""}
           </p>
           <p style="margin: 0;">
-            በዚህ መሠረት እና መድረሳው ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) ጋር በማዛመድ፣
-            <strong style="color:#065f46;">ከመድረሳ በቋሚነት ተሰናብተዋል</strong> እና ከዛሬ ጀምሮ በመድረሳው የትምህርት ፕሮግራም መቀጠል አይችሉም።
+            ይህንን የቀሪ ሁኔታ መድረሳው ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) ጋር በማዛመድ፤ ተማሪ ${std.filename} ${std.lastName} 
+            <strong style="color:#065f46;">ከመድረሳ በቋሚነት ተሰናብተሻል</strong> እና ከዛሬ ጀምሮ በመድረሳው የትምህርት ፕሮግራም መቀጠል አትችዪም።
           </p>
         </div>
 
@@ -398,7 +419,7 @@ async function executeIndividualWarningPdf(stdId) {
       scrollX: 0,
       scrollY: 0,
       letterRendering: true,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
