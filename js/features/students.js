@@ -206,7 +206,10 @@ function showStudentDetails(stdId) {
   const daysInMonth = getDaysInECMonth(year, monthIdx);
 
   // Build attendance summary for selected month
-  let presentCount = 0, absentCount = 0, permissionCount = 0, missedCount = 0;
+  let presentCount = 0,
+    absentCount = 0,
+    permissionCount = 0,
+    missedCount = 0;
   let dayRows = "";
 
   for (let d = 0; d < daysInMonth; d++) {
@@ -222,19 +225,34 @@ function showStudentDetails(stdId) {
 
     if (isInactive) continue; // skip no-class / before-open days
 
-    let statusLabel = "", statusColor = "var(--text-muted)", bgColor = "";
+    let statusLabel = "",
+      statusColor = "var(--text-muted)",
+      bgColor = "";
     if (status === "✓") {
-      statusLabel = "✓ መጣ"; statusColor = "#10b981"; presentCount++;
+      statusLabel = "✓ መጣ";
+      statusColor = "#10b981";
+      presentCount++;
     } else if (status === "X") {
-      statusLabel = "✕ ቀረ"; statusColor = "#ef4444"; bgColor = "rgba(239,68,68,0.08)"; absentCount++;
+      statusLabel = "✕ ቀረ";
+      statusColor = "#ef4444";
+      bgColor = "rgba(239,68,68,0.08)";
+      absentCount++;
     } else if (status === "Ref") {
-      statusLabel = "ፍ ፍቃድ"; statusColor = "#f59e0b"; bgColor = "rgba(245,158,11,0.08)"; permissionCount++;
+      statusLabel = "ፍ ፍቃድ";
+      statusColor = "#f59e0b";
+      bgColor = "rgba(245,158,11,0.08)";
+      permissionCount++;
     } else if (isMissed) {
-      statusLabel = "! ሳይሞላ"; statusColor = "#dc2626"; bgColor = "rgba(239,68,68,0.05)"; missedCount++;
+      statusLabel = "! ሳይሞላ";
+      statusColor = "#dc2626";
+      bgColor = "rgba(239,68,68,0.05)";
+      missedCount++;
     } else if (isFuture) {
-      statusLabel = "— ያልደረሰ"; statusColor = "var(--text-muted)";
+      statusLabel = "— ያልደረሰ";
+      statusColor = "var(--text-muted)";
     } else {
-      statusLabel = "—"; statusColor = "var(--text-muted)";
+      statusLabel = "—";
+      statusColor = "var(--text-muted)";
     }
 
     dayRows += `
@@ -252,7 +270,7 @@ function showStudentDetails(stdId) {
   modalBody.innerHTML = `
     <div style="margin-bottom:14px; padding:12px 14px; background:var(--primary-light); border-radius:var(--radius-sm); border:1px solid var(--primary-glow);">
       <div style="font-size:13px; margin-bottom:4px;"><strong>ኡስታዛ፦</strong> ${insName}</div>
-      <div style="font-size:13px; margin-bottom:4px;"><strong>ወር፦</strong> ${monthName} ${year} ዓ.ም</div>
+      <div style="font-size:13px; margin-bottom:4px;"><strong>ወር፦</strong> ${monthName} ${year} ዓ.ል</div>
       <div style="font-size:13px;"><strong>ስልክ፦</strong> ${std.phone || "—"}</div>
     </div>
     <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
@@ -294,7 +312,10 @@ async function executeIndividualWarningPdf(stdId) {
     const key = `${std.id}_${year}_${monthIdx}_${d}`;
     const legacyKey = `${std.id}_${monthIdx}_${d}`;
     const status = state.attendance[key] || state.attendance[legacyKey] || "";
-    if (status === "X") { absentDays.push(d + 1); absentCount++; }
+    if (status === "X") {
+      absentDays.push(d + 1);
+      absentCount++;
+    }
   }
   const absentDaysStr = absentDays.join("፣ ");
 
@@ -335,7 +356,7 @@ async function executeIndividualWarningPdf(stdId) {
 
         <div style="margin-bottom: 25px; line-height: 1.8; font-size: 13px; text-align: justify; color: #374151; font-family: var(--font);">
           <p style="margin: 0 0 15px 0;">
-            አሁን ባለው የመድረሳው ቁጥጥር መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong> ውስጥ ያለበቂ ምክንያትና ያለፈቃድ 
+            አሁን ባለው የመድረሳው ቁጥጥር መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ል</strong> ውስጥ ያለበቂ ምክንያትና ያለፈቃድ 
             <strong style="color: #dc2626; font-size: 14.5px;">${absentCount} ቀን</strong> ከትምህርት ገበታ ቀርተዋል።
             ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong> ናቸው።` : ""}
           </p>
@@ -398,7 +419,7 @@ async function executeIndividualWarningPdf(stdId) {
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };

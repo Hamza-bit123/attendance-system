@@ -1,4 +1,4 @@
-// -------------------------------------------------------------
+﻿// -------------------------------------------------------------
 // 6. ማስተር ሪፖርት እና ፒዲኤፍ ሞዱል (Master Report & PDF Generator)
 // -------------------------------------------------------------
 
@@ -9,9 +9,10 @@ function getAttendanceStatus(stdId, year, monthIdx, dayIdx) {
 }
 
 function waitForPdfPaint() {
-  const fontsReady = document.fonts && document.fonts.ready
-    ? document.fonts.ready.catch(() => {})
-    : Promise.resolve();
+  const fontsReady =
+    document.fonts && document.fonts.ready
+      ? document.fonts.ready.catch(() => {})
+      : Promise.resolve();
 
   return fontsReady.then(
     () =>
@@ -143,7 +144,7 @@ function renderMasterReportPreview() {
                 <div style="margin-bottom:12px; display: block; justify-content: space-between;">
                     <h3>ኡስታዛ፦ ${ins.firstName} ${ins.lastName}</h3>
                     <h1>ኢብኑ ዑመር መድረሳ</h1>
-                    <h3>${monthName + " " + year + " ዓ.ም"}</h3>
+                    <h3>${monthName + " " + year + " ዓ.ል"}</h3>
                 </div>
                 <table class="pdf-table">
                     <thead>
@@ -193,7 +194,7 @@ async function executePdfGeneration() {
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     pagebreak: { mode: ["css", "legacy"] },
@@ -210,10 +211,6 @@ async function executePdfGeneration() {
 
 // Warning PDF (students absent 3+ days)
 function renderWarningReportPreview() {
-  const container = document.getElementById("warningPdfExportWrapper");
-  if (!container) return;
-  container.innerHTML = "";
-
   const year = state.selectedYear;
   const monthIdx = state.selectedMonth;
   const monthName = monthsEthiopic[monthIdx];
@@ -244,6 +241,17 @@ function renderWarningReportPreview() {
       }
     }
   });
+  document.getElementById("prepDate").innerText = getTodayDisplayString();
+  document.getElementById("reportDate").innerText = `${monthName} ${year} ዓ.ል`;
+  document.getElementById("notice").innerText = `
+    እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ል 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ
+    ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ
+    በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ) በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት
+    አማካኝነት የሚፈፀም ይሆናል።
+  `;
+
+  const instractorCard = document.getElementById("pdf-warning-table");
+  instractorCard.innerHTML = "";
 
   // Group warning students by instructor
   let hasContent = false;
@@ -264,83 +272,27 @@ function renderWarningReportPreview() {
           <td>${idx + 1}</td>
           <td class="student-name">${std.firstName} ${std.lastName}</td>
           <td style="font-weight: 700; color: #dc2626;">${absentMap[std.id]} ቀን</td>
-          <td><span class="pdf-badge-danger">ማስጠንቀቂያ</span></td>
         </tr>
       `;
     });
 
-    const todayStr = getTodayDisplayString();
-
-    page.innerHTML = `
-      <div class="pdf-report-inner">
-        <div>
-          <div class="pdf-official-header">
-            <h1>ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
-            <p class="subtitle">ibnu umer qur'an memorization medresa</p>
-          </div>
-
-          <div class="pdf-meta-grid">
-            <div>
-              <span class="label">የሪፖርት ዓይነት፦</span>
-              <span class="value">የቀሪ ማስጠንቀቂያ ጠቅላላ ሪፖርት</span>
-            </div>
-            <div>
-              <span class="label">ኡስታዛ፦</span>
-              <span class="value">${ins.firstName} ${ins.lastName}</span>
-            </div>
-            <div>
-              <span class="label">ወር፦</span>
-              <span class="value">${monthName} ${year} ዓ.ም</span>
-            </div>
-            <div>
-              <span class="label">የተዘጋጀበት ቀን፦</span>
-              <span class="value">${todayStr}</span>
-            </div>
-          </div>
-
-          <h3 style="font-size: 13px; font-weight: 700; color: #064e3b; margin: 15px 0 8px 0; font-family: var(--font); text-align: left;">ከ3 ቀን በላይ የቀሩ ተማሪዎች ዝርዝር</h3>
-          <table class="pdf-warning-table">
-            <thead>
-              <tr>
-                <th style="width: 10%;">ተ.ቁ</th>
-                <th style="width: 45%;">የተማሪ ስም</th>
-                <th style="width: 25%;">የቀሩበት ቀን ብዛት</th>
-                <th style="width: 20%;">ውሳኔ / ደረጃ</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rowsHtml}
-            </tbody>
-          </table>
-
-          <div class="pdf-policy-box">
-            <h4>⚠️ ማሳሰቢያ (Notice)</h4>
-            <p>
-              እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ም 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ) በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት አማካኝነት የሚፈፀም ይሆናል።
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div class="pdf-signatures-grid">
-            <div class="pdf-signature-block">
-              <div class="pdf-signature-line"></div>
-              <p class="title">ኡስታዛ ${ins.firstName} ${ins.lastName}</p>
-              <p class="subtitle">የክፍሉ ኡስታዛ ፊርማ</p>
-            </div>
-            <div class="pdf-signature-block">
-              <div class="pdf-signature-line"></div>
-              <p class="title">የመድረሳው አስተዳደር ኮሚቴ</p>
-              <p class="subtitle">ኢብኑ ዑመር መድረሳ</p>
-            </div>
-          </div>
-          <p style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
-            — ኢብኑ ዑመር መድረሳ ወርሃዊ የቀሪ ሪፖርት —
-          </p>
-        </div>
-      </div>
+    const table = `
+      <table class="pdf-warning-table">
+        <h4>ኡስታዛ:- ${ins.firstName} ${ins.lastName}</h4>
+        <thead>
+          <tr>
+            <th style="width: 10%;">ተ.ቁ</th>
+            <th style="width: 45%;">የተማሪ ስም</th>
+            <th style="width: 25%;">የቀሩበት ቀን ብዛት</th>
+          </tr>
+        </thead>
+        <tbody>
+        ${rowsHtml}
+        </tbody>
+      </table>
     `;
-    container.appendChild(page);
+
+    instractorCard.innerHTML += table;
   });
 
   if (!hasContent) {
@@ -369,7 +321,7 @@ async function executeWarningPdfGeneration() {
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     pagebreak: { mode: ["css", "legacy"] },
