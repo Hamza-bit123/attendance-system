@@ -217,7 +217,6 @@ function renderWarningReportPreview() {
   const year = state.selectedYear;
   const monthIdx = state.selectedMonth;
   const monthName = monthsEthiopic[monthIdx];
-  const daysInMonth = getDaysInECMonth(year, monthIdx);
 
   // Build absence count map for selected month
   let absentMap = {};
@@ -245,17 +244,13 @@ function renderWarningReportPreview() {
     }
   });
 
-  // Group warning students by instructor
-  let hasContent = false;
+  // Build consolidated warning report (one report, multiple instructor sections)
+  const instructorBlocks = [];
   state.instructors.forEach((ins) => {
     const warningStudents = state.students.filter(
       (s) => s.instructorId === ins.id && (absentMap[s.id] || 0) >= 3,
     );
     if (warningStudents.length === 0) return;
-    hasContent = true;
-
-    const page = document.createElement("div");
-    page.className = "pdfMasterReport";
 
     let rowsHtml = "";
     warningStudents.forEach((std, idx) => {
@@ -264,88 +259,84 @@ function renderWarningReportPreview() {
           <td>${idx + 1}</td>
           <td class="student-name">${std.firstName} ${std.lastName}</td>
           <td style="font-weight: 700; color: #dc2626;">${absentMap[std.id]} ቀን</td>
-          <td><span class="pdf-badge-danger">ማስጠንቀቂያ</span></td>
         </tr>
       `;
     });
 
-    const todayStr = getTodayDisplayString();
+    instructorBlocks.push(`
+      <div class="pdf-instructor-block">
+        <div class="pdf-instructor-header">
+          <span class="pdf-instructor-label">ኡስታዛ፦</span>
+          <span class="pdf-instructor-name">${ins.firstName} ${ins.lastName}</span>
+        </div>
+        <table class="pdf-warning-table pdf-warning-table-compact">
+          <thead>
+            <tr>
+              <th style="width: 12%;">ተ.ቁ</th>
+              <th style="width: 58%;">የተማሪ ስም</th>
+              <th style="width: 30%;">የቀሩበት ቀን</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `);
+  });
 
-    page.innerHTML = `
-      <div class="pdf-report-inner">
-        <div>
-          <div class="pdf-official-header">
-            <h1>ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
-            <p class="subtitle">ibnu umer qur'an memorization medresa</p>
+  if (instructorBlocks.length === 0) {
+    container.innerHTML = `<div style="color:var(--text-muted); padding:30px; text-align:center; font-family:var(--font);">ለዚህ ወር 3 ቀን ወይም ከዚያ በላይ የቀረ ተማሪ የለም።</div>`;
+    return;
+  }
+
+  const todayStr = getTodayDisplayString();
+
+  const page = document.createElement("div");
+  page.className = "pdf-page-portrait";
+  page.innerHTML = `
+    <div class="pdf-report-inner">
+      <div>
+        <div class="pdf-official-header">
+          <h1>ኢብኑ ዑመር መድረሳ</h1>
+          <p class="subtitle">IBNU OUMER MEDRESA</p>
+        </div>
+
+        <div class="pdf-meta-grid">
+          <div>
+            <span class="label">የሪፖርት ዓይነት፦</span>
+            <span class="value">የቀሪ ማስጠንቀቂያ ጠቅላላ ሪፖርት</span>
           </div>
-
-          <div class="pdf-meta-grid">
-            <div>
-              <span class="label">የሪፖርት ዓይነት፦</span>
-              <span class="value">የቀሪ ማስጠንቀቂያ ጠቅላላ ሪፖርት</span>
-            </div>
-            <div>
-              <span class="label">ኡስታዛ፦</span>
-              <span class="value">${ins.firstName} ${ins.lastName}</span>
-            </div>
-            <div>
-              <span class="label">ወር፦</span>
-              <span class="value">${monthName} ${year} ዓ.ም</span>
-            </div>
-            <div>
-              <span class="label">የተዘጋጀበት ቀን፦</span>
-              <span class="value">${todayStr}</span>
-            </div>
+          <div>
+            <span class="label">የሪፖርት ወር፦</span>
+            <span class="value">${monthName} ${year} ዓ.ም</span>
           </div>
-
-          <h3 style="font-size: 13px; font-weight: 700; color: #064e3b; margin: 15px 0 8px 0; font-family: var(--font); text-align: left;">ከ3 ቀን በላይ የቀሩ ተማሪዎች ዝርዝር</h3>
-          <table class="pdf-warning-table">
-            <thead>
-              <tr>
-                <th style="width: 10%;">ተ.ቁ</th>
-                <th style="width: 45%;">የተማሪ ስም</th>
-                <th style="width: 25%;">የቀሩበት ቀን ብዛት</th>
-                <th style="width: 20%;">ውሳኔ / ደረጃ</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rowsHtml}
-            </tbody>
-          </table>
-
-          <div class="pdf-policy-box">
-            <h4>⚠️ ማሳሰቢያ (Notice)</h4>
-            <p>
-              እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ም 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤ ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ) በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት አማካኝነት የሚፈፀም ይሆናል።
-            </p>
+          <div>
+            <span class="label">የተዘጋጀበት ቀን፦</span>
+            <span class="value">${todayStr}</span>
           </div>
         </div>
 
-        <div>
-          <div class="pdf-signatures-grid">
-            <div class="pdf-signature-block">
-              <div class="pdf-signature-line"></div>
-              <p class="title">ኡስታዛ ${ins.firstName} ${ins.lastName}</p>
-              <p class="subtitle">የክፍሉ ኡስታዛ ፊርማ</p>
-            </div>
-            <div class="pdf-signature-block">
-              <div class="pdf-signature-line"></div>
-              <p class="title">የመድረሳው አስተዳደር ኮሚቴ</p>
-              <p class="subtitle">ኢብኑ ዑመር መድረሳ</p>
-            </div>
-          </div>
-          <p style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
-            — ኢብኑ ዑመር መድረሳ ወርሃዊ የቀሪ ሪፖርት —
+        <h3 class="pdf-section-title">ከ3 ቀን በላይ የቀሩ ተማሪዎች (በኡስታዛ መደብ)</h3>
+
+        ${instructorBlocks.join("")}
+
+        <div class="pdf-policy-box">
+          <h4>⚠️ ማሳሰቢያ</h4>
+          <p>
+            እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ም 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ
+            ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤
+            ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ)
+            በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት አማካኝነት የሚፈፀም ይሆናል።
           </p>
         </div>
       </div>
-    `;
-    container.appendChild(page);
-  });
 
-  if (!hasContent) {
-    container.innerHTML = `<div style="color:var(--text-muted); padding:30px; text-align:center; font-family:var(--font);">ለዚህ ወር 3 ቀን ወይም ከዚያ በላይ የቀረ ተማሪ የለም።</div>`;
-  }
+      <p class="pdf-footer-note">— ኢብኑ ዑመር መድረሳ ወርሃዊ የቀሪ ሪፖርት —</p>
+    </div>
+  `;
+
+  container.appendChild(page);
 }
 
 async function executeWarningPdfGeneration() {
@@ -362,13 +353,15 @@ async function executeWarningPdfGeneration() {
   const opt = {
     margin: 0,
     filename: `Warning_Report_${monthName}_${year}.pdf`,
-    image: { type: "jpeg", quality: 1.0 },
+    image: { type: "png", quality: 1.0 },
     html2canvas: {
-      scale: getPdfScale(),
+      // Higher scale makes text crisper in the exported PDF
+      scale: Math.max(3, getPdfScale()),
       useCORS: true,
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
+      letterRendering: true,
       logging: true
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },

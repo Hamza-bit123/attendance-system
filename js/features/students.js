@@ -300,69 +300,68 @@ async function executeIndividualWarningPdf(stdId) {
 
   const element = document.createElement("div");
   element.className = "pdf-page-portrait";
+  // Prevent clipping if content slightly overflows during canvas capture
+  element.style.overflow = "visible";
 
   element.innerHTML = `
     <div class="pdf-letter-inner">
       <div>
         <div class="pdf-letter-header">
-          <h1 style="font-size: 20px !important; font-weight: 800 !important; color: #7f1d1d !important; margin: 0 0 4px 0 !important; font-family: var(--font);">ኢብኑ ዑመር ቁርኣን ሐፍዝ መድረሳ</h1>
-          <p class="subtitle" style="font-size: 11px !important; color: #dc2626 !important; text-transform: uppercase; font-weight: 600; margin: 0; font-family: var(--font);">ibnu umer qur'an memorization medresa</p>
+          <h1 style="font-size: 20px !important; font-weight: 800 !important; color: #064e3b !important; margin: 0 0 4px 0 !important; font-family: var(--font);">ኢብኑ ዑመር መድረሳ</h1>
+          <p class="subtitle" style="font-size: 11px !important; color: #059669 !important; text-transform: uppercase; font-weight: 800; margin: 0; font-family: var(--font);">IBNU OUMER MEDRESA</p>
         </div>
 
-        <div style="text-align: center; margin-bottom: 25px;">
-          <h2 style="font-size: 16px; font-weight: 700; color: #dc2626; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; font-family: var(--font);">የቀሪ ማስጠንቀቂያ ደብዳቤ</h2>
-          <span style="font-size: 11px; color: #6b7280; font-style: italic;">Official Warning Letter</span>
+        <div style="text-align: center; margin-bottom: 14px;">
+          <h2 style="font-size: 15px; font-weight: 900; color: #065f46; letter-spacing: 0.2px; margin: 0; font-family: var(--font);">የቀሪ ማስጠንቀቂያ ደብዳቤ</h2>
         </div>
 
-        <div class="pdf-meta-grid" style="background: #fef2f2; border: 1px solid #fecaca; margin-bottom: 25px; font-size: 13px;">
+        <div class="pdf-meta-grid" style="background: #f0fdf4; border: 1px solid #bbf7d0; margin-bottom: 14px; font-size: 12.5px;">
           <div>
-            <span class="label" style="color: #b91c1c;">ቀን (Date)፦</span>
+            <span class="label" style="color: #047857;">ቀን፦</span>
             <span class="value" style="color: #111827;">${getTodayDisplayString()}</span>
           </div>
           <div>
-            <span class="label" style="color: #b91c1c;">ለተማሪ (To Student)፦</span>
+            <span class="label" style="color: #047857;">ለተማሪ፦</span>
             <span class="value" style="color: #111827;">${std.firstName} ${std.lastName}</span>
           </div>
           <div>
-            <span class="label" style="color: #b91c1c;">ኡስታዛ (Instructor)፦</span>
+            <span class="label" style="color: #047857;">ኡስታዛ፦</span>
             <span class="value" style="color: #111827;">${insName}</span>
           </div>
           <div>
-            <span class="label" style="color: #b91c1c;">የቀሪ ብዛት (Total Absences)፦</span>
-            <span class="value" style="color: #b91c1c; font-weight: 700;">${absentCount} ቀን (Days)</span>
+            <span class="label" style="color: #047857;">የቀሪ ብዛት፦</span>
+            <span class="value" style="color: #065f46; font-weight: 900;">${absentCount} ቀን</span>
           </div>
         </div>
 
-        <div style="margin-bottom: 25px; line-height: 1.8; font-size: 13px; text-align: justify; color: #374151; font-family: var(--font);">
-          <p style="margin: 0 0 15px 0;">
-            አሁን ባለው የመድረሳው ቁጥጥር መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong> ውስጥ ያለበቂ ምክንያትና ያለፈቃድ 
-            <strong style="color: #dc2626; font-size: 14.5px;">${absentCount} ቀን</strong> ከትምህርት ገበታ ቀርተዋል።
-            ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong> ናቸው።` : ""}
+        <div style="margin-bottom: 12px; line-height: 1.65; font-size: 12.5px; text-align: justify; color: #374151; font-family: var(--font);">
+          <p style="margin: 0 0 10px 0;">
+            በመድረሳው የቀሪ መቆጣጠሪያ መረጃ መሠረት፣ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong>
+            ያለፈቃድ <strong style="color:#dc2626;">${absentCount} ቀን</strong> ቀርተዋል።
+            ${absentDays.length > 0 ? `የቀሩባቸው ቀናት፦ <strong>${absentDaysStr}</strong>።` : ""}
           </p>
-          <p style="margin: 0 0 15px 0;">
-            ይህ የመቅረት ሁኔታ መድረሳው ተማሪዎች በቋሚነት እንዲገኙ ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) የሚቃረን እና ከባድ ደንብ መጣስ በመሆኑ፤ ይህ የመጀመሪያና የመጨረሻ ማስጠንቀቂያ ደብዳቤ እንዲደርስዎት ተደርጓል። በቀጣይ ቀሪ ሁኔታዎ ካልተሻሻለ እና መደበኛ ትምህርት ካልቀጠሉ መድረሳው ያስቀመጠው ጠንከር ያለ ህግ (ማባረር) ተግባራዊ የሚደረግ መሆኑን በጥብቅ እናሳውቃለን።
+          <p style="margin: 0;">
+            በዚህ መሠረት እና መድረሳው ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) ጋር በማዛመድ፣
+            <strong style="color:#065f46;">ከመድረሳ በቋሚነት ተሰናብተዋል</strong> እና ከዛሬ ጀምሮ በመድረሳው የትምህርት ፕሮግራም መቀጠል አይችሉም።
           </p>
         </div>
 
-        <div class="pdf-policy-box" style="background-color: #fef2f2; border-left: 4px solid #dc2626; margin-bottom: 25px;">
-          <h4 style="color: #991b1b !important; font-size: 13px !important; margin: 0 0 6px 0 !important; font-weight: bold;">✍️ የተማሪ ስምምነት ቃል (Student Agreement)</h4>
-          <p style="color: #4b5563 !important; font-size: 12.5px !important; line-height: 1.6 !important; margin: 0 !important;">
-            እኔ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በዚህ ደብዳቤ የቀረበብኝን የመቅረት ሪፖርት አምኜ በመቀበል፣ መድረሳው የሰጠኝን ማስጠንቀቂያ ተረድቻለሁ። በቀጣይ ያለፈቃድ እንደማልቀር እና የትምህርት ክትትሌን እንደማስተካክል በፊርማዬ አረጋግጣለሁ።
-          </p>
+        <div style="padding:10px 12px; background:#f0fdf4; border:1px solid #bbf7d0; border-left:4px solid #059669; border-radius:6px; font-size:12px; color:#065f46; line-height:1.55;">
+          <strong>ማስታወቂያ፦</strong> ይህ ደብዳቤ የመድረሳው ውሳኔ መግለጫ ነው።
         </div>
       </div>
 
       <div>
-        <div class="pdf-signatures-grid" style="margin-top: 20px;">
-          <div class="pdf-signature-block">
-            <div class="pdf-signature-line" style="border-bottom-color: #dc2626;"></div>
-            <p class="title">የመድረሳው አስተዳደር ኮሚቴ</p>
-            <p class="subtitle">ፊርማ እና ማህተም</p>
+        <div style="margin-top: 14px; display:grid; grid-template-columns: 1fr 1fr; gap: 22px;">
+          <div style="text-align:center;">
+            <div style="font-size:11px; font-weight:900; color:#065f46; margin-bottom:6px;">የተማሪ ስምምነት ፊርማ</div>
+            <div class="pdf-signature-line" style="border-bottom-color:#059669;"></div>
+            <div style="margin-top:6px; font-size:11px; font-weight:700; color:#111827;">ተማሪ፦ ${std.firstName} ${std.lastName}</div>
           </div>
-          <div class="pdf-signature-block">
-            <div class="pdf-signature-line" style="border-bottom-color: #dc2626;"></div>
-            <p class="title">ተማሪ ${std.firstName} ${std.lastName}</p>
-            <p class="subtitle">ፊርማ (Signature)</p>
+          <div style="text-align:center;">
+            <div style="font-size:11px; font-weight:900; color:#065f46; margin-bottom:6px;">የኮሚቴ ውሳኔ ፊርማ</div>
+            <div class="pdf-signature-line" style="border-bottom-color:#059669;"></div>
+            <div style="margin-top:6px; font-size:11px; font-weight:700; color:#111827;">የመድረሳው አስተዳደር ኮሚቴ</div>
           </div>
         </div>
         <p style="margin: 25px 0 0 0; text-align: center; font-size: 10px; color: #9ca3af; font-family: var(--font); font-style: italic;">
@@ -391,13 +390,14 @@ async function executeIndividualWarningPdf(stdId) {
   const opt = {
     margin: 0,
     filename: `Warning_${std.firstName}_${std.lastName}_${monthName}_${year}.pdf`,
-    image: { type: "jpeg", quality: 1.0 },
+    image: { type: "png", quality: 1.0 },
     html2canvas: {
-      scale: getPdfScale(),
+      scale: Math.max(3, getPdfScale()),
       useCORS: true,
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
+      letterRendering: true,
       logging: true
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },

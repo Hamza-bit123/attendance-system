@@ -1678,7 +1678,7 @@ h2 {
 .pdf-page-portrait {
     background: white !important;
     color: #0f172a !important;
-    padding: 20px !important;
+    padding: 12px !important;
     width: 100%;
     max-width: 700px;
     box-sizing: border-box;
@@ -1686,7 +1686,7 @@ h2 {
     break-after: always;
     margin: 0 auto 25px auto;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 4px;
     font-family: var(--font);
     display: flex;
@@ -1971,7 +1971,7 @@ h2 {
 
 .pdf-report-inner {
     border: 3px double #059669;
-    padding: 25px 20px;
+    padding: 16px 14px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -2043,7 +2043,7 @@ h2 {
 .pdf-warning-table td {
     padding: 8px 10px !important;
     border: 1px solid #d1d5db !important;
-    font-size: 12.5px !important;
+    font-size: 13.5px !important;
     color: #1f2937 !important;
     text-align: center;
 }
@@ -2095,6 +2095,55 @@ h2 {
     text-align: justify;
 }
 
+.pdf-section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #064e3b;
+    margin: 12px 0 10px 0;
+    font-family: var(--font);
+    text-align: left;
+}
+
+.pdf-instructor-block {
+    margin: 10px 0 14px 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.pdf-instructor-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 6px;
+    margin: 0 0 6px 0;
+    font-family: var(--font);
+}
+
+.pdf-instructor-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #064e3b;
+}
+
+.pdf-instructor-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #065f46;
+}
+
+.pdf-warning-table.pdf-warning-table-compact {
+    margin: 6px 0 0 0;
+}
+
+.pdf-footer-note {
+    margin: 22px 0 0 0;
+    text-align: center;
+    font-size: 10px;
+    color: #9ca3af;
+    font-family: var(--font);
+    font-style: italic;
+}
+
 .pdf-signatures-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2127,19 +2176,22 @@ h2 {
 
 /* Document border wrapper for single student warning */
 .pdf-letter-inner {
-    border: 3px double #dc2626; /* red double border for individual warning */
-    padding: 25px 20px;
+    border: 3px double #059669; /* green double border for individual letter */
+    padding: 16px 14px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
     background-color: #ffffff;
+    /* Center the report block horizontally on the page */
+    max-width: 680px;
+    margin: 0 auto;
 }
 
 .pdf-letter-header {
     text-align: center;
-    border-bottom: 2px solid #dc2626;
+    border-bottom: 2px solid #059669;
     padding-bottom: 12px;
     margin-bottom: 20px;
 }
@@ -2153,7 +2205,7 @@ h2 {
 
 .pdf-letter-header p.subtitle {
     font-size: 11px !important;
-    color: #dc2626 !important;
+    color: #059669 !important;
     text-transform: uppercase;
     font-weight: 600;
     margin: 0;
