@@ -270,7 +270,7 @@ function showStudentDetails(stdId) {
   modalBody.innerHTML = `
     <div style="margin-bottom:14px; padding:12px 14px; background:var(--primary-light); border-radius:var(--radius-sm); border:1px solid var(--primary-glow);">
       <div style="font-size:13px; margin-bottom:4px;"><strong>ኡስታዛ፦</strong> ${insName}</div>
-      <div style="font-size:13px; margin-bottom:4px;"><strong>ወር፦</strong> ${monthName} ${year} ዓ.ም</div>
+      <div style="font-size:13px; margin-bottom:4px;"><strong>ወር፦</strong> ${monthName} ${year} ዓ.ል</div>
       <div style="font-size:13px;"><strong>ስልክ፦</strong> ${std.phone || "—"}</div>
     </div>
     <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
@@ -357,12 +357,12 @@ async function executeIndividualWarningPdf(stdId) {
 
         <div style="margin-bottom: 12px; line-height: 1.65; font-size: 12.5px; text-align: justify; color: #374151; font-family: var(--font);">
           <p style="margin: 0 0 10px 0;">
-            በመድረሳው የቀሪ መቆጣጠሪያ መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ም</strong>
+            በመድረሳው የቀሪ መቆጣጠሪያ መረጃ መሠረት፤ ተማሪ <strong>${std.firstName} ${std.lastName}</strong> በወርሃ <strong>${monthName} ${year} ዓ.ል</strong>
             ያለፈቃድ <strong style="color:#dc2626;">${absentCount} ቀን</strong> ቀርተሻል።
-            ${absentDays.length > 0 ? `የቀረሽባቸው ቀናት ${monthName} ( <strong>${absentDaysStr})</strong> ናቸው።` : ""}
+            ${absentDays.length > 0 ? `የቀረሽባቸው ቀናትም ${monthName} ( <strong>${absentDaysStr})</strong> ናቸው።` : ""}
           </p>
           <p style="margin: 0;">
-            ይህንን የቀሪ ሁኔታ መድረሳው ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) ጋር በማዛመድ፤ ተማሪ ${std.filename} ${std.lastName} 
+            ይህንን የቀሪ ሁኔታ መድረሳው ካስቀመጠው ደንብ (ከ3 ቀን በላይ ያለፈቃድ መቅረት) ጋር በማዛመድ፤ ተማሪ ${std.firstName} ${std.lastName} 
             <strong style="color:#065f46;">ከመድረሳ በቋሚነት ተሰናብተሻል</strong> እና ከዛሬ ጀምሮ በመድረሳው የትምህርት ፕሮግራም መቀጠል አትችዪም።
           </p>
         </div>
@@ -413,7 +413,7 @@ async function executeIndividualWarningPdf(stdId) {
     filename: `Warning_${std.firstName}_${std.lastName}_${monthName}_${year}.pdf`,
     image: { type: "png", quality: 1.0 },
     html2canvas: {
-      scale: Math.max(3, getPdfScale()),
+      scale: Math.max(1.5, getPdfScale()),
       useCORS: true,
       backgroundColor: "#ffffff",
       scrollX: 0,

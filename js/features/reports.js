@@ -1,4 +1,4 @@
-// -------------------------------------------------------------
+﻿// -------------------------------------------------------------
 // 6. ማስተር ሪፖርት እና ፒዲኤፍ ሞዱል (Master Report & PDF Generator)
 // -------------------------------------------------------------
 
@@ -9,9 +9,10 @@ function getAttendanceStatus(stdId, year, monthIdx, dayIdx) {
 }
 
 function waitForPdfPaint() {
-  const fontsReady = document.fonts && document.fonts.ready
-    ? document.fonts.ready.catch(() => {})
-    : Promise.resolve();
+  const fontsReady =
+    document.fonts && document.fonts.ready
+      ? document.fonts.ready.catch(() => {})
+      : Promise.resolve();
 
   return fontsReady.then(
     () =>
@@ -79,7 +80,7 @@ function renderMasterReportPreview() {
     const myStudents = state.students.filter((s) => s.instructorId === ins.id);
     if (myStudents.length === 0) return;
 
-    const ROWS_PER_PAGE = 30;
+    const ROWS_PER_PAGE = 32;
     const totalPages = Math.ceil(myStudents.length / ROWS_PER_PAGE);
 
     for (let pageIdx = 0; pageIdx < totalPages; pageIdx++) {
@@ -140,10 +141,10 @@ function renderMasterReportPreview() {
       }
 
       page.innerHTML = `
-                <div style="margin-bottom:12px; display: block; justify-content: space-between;">
+                <div style="margin-bottom:12px; display: flex; justify-content: space-between;">
                     <h3>ኡስታዛ፦ ${ins.firstName} ${ins.lastName}</h3>
                     <h1>ኢብኑ ዑመር መድረሳ</h1>
-                    <h3>${monthName + " " + year + " ዓ.ም"}</h3>
+                    <h3>${monthName + " " + year + " ዓ.ል"}</h3>
                 </div>
                 <table class="pdf-table">
                     <thead>
@@ -193,7 +194,7 @@ async function executePdfGeneration() {
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     pagebreak: { mode: ["css", "legacy"] },
@@ -309,7 +310,7 @@ function renderWarningReportPreview() {
           </div>
           <div>
             <span class="label">የሪፖርት ወር፦</span>
-            <span class="value">${monthName} ${year} ዓ.ም</span>
+            <span class="value">${monthName} ${year} ዓ.ል</span>
           </div>
           <div>
             <span class="label">የተዘጋጀበት ቀን፦</span>
@@ -324,7 +325,7 @@ function renderWarningReportPreview() {
         <div class="pdf-policy-box">
           <h4>⚠️ ማሳሰቢያ</h4>
           <p>
-            እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ም 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ
+            እኒህ ከላይ ስማቸው የተዘረዘሩ ተማሪዎች በወርሃ ${monthName} ${year} ዓ.ል 3 ቀንና ከዚያ በላይ ሳያስፈቅዱ
             ማለትም የቀሩበትን ምክንያት ከመቅረታቸው በፊት ለሚመለከተው አካል ሳያሳውቁ የቀሩ ስለሆኑ፤
             ኢብኑ ዑመር መድረሳ ከ3 ቀን በላይ በቀሩ ተማሪዎች ላይ ያስቀመጠው ህግ (መባረር/ማስጠንቀቂያ)
             በቀጥታ የሚመለከታቸው ይሆናል። ህጉም በሚመለከታቸው አካላት አማካኝነት የሚፈፀም ይሆናል።
@@ -353,16 +354,16 @@ async function executeWarningPdfGeneration() {
   const opt = {
     margin: 0,
     filename: `Warning_Report_${monthName}_${year}.pdf`,
-    image: { type: "png", quality: 1.0 },
+    image: { type: "png", quality: 0.98 },
     html2canvas: {
       // Higher scale makes text crisper in the exported PDF
-      scale: Math.max(3, getPdfScale()),
+      scale: Math.max(1.5, getPdfScale()),
       useCORS: true,
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: 0,
       letterRendering: true,
-      logging: true
+      logging: true,
     },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     pagebreak: { mode: ["css", "legacy"] },

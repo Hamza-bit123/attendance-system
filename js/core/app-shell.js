@@ -38,14 +38,17 @@ function initFirstOpenedDay() {
   if (raw) {
     try {
       parsed = JSON.parse(raw);
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   // Check if parsed is a valid date object
-  const isValid = parsed && 
-                  typeof parsed.year === "number" && 
-                  typeof parsed.month === "number" && 
-                  typeof parsed.day === "number";
+  const isValid =
+    parsed &&
+    typeof parsed.year === "number" &&
+    typeof parsed.month === "number" &&
+    typeof parsed.day === "number";
 
   // Check if the stored date is in the future compared to TODAY_EC (invalid state)
   let isStoredInFuture = false;
@@ -65,7 +68,11 @@ function initFirstOpenedDay() {
     state.firstOpenedDate = parsed;
   } else {
     // Default/Reset: record today's actual EC date as the opening date
-    const openingDate = { year: TODAY_EC.year, month: TODAY_EC.month, day: TODAY_EC.day };
+    const openingDate = {
+      year: TODAY_EC.year,
+      month: TODAY_EC.month,
+      day: TODAY_EC.day,
+    };
     state.firstOpenedDate = openingDate;
     localStorage.setItem(newKey, JSON.stringify(openingDate));
   }
@@ -83,7 +90,7 @@ function initDateSelectors() {
     for (let y = endYear; y >= startYear; y--) {
       const opt = document.createElement("option");
       opt.value = y;
-      opt.textContent = `${y} ዓ.ም`;
+      opt.textContent = `${y} ዓ.ል`;
       if (y === state.selectedYear) opt.selected = true;
       selectEl.appendChild(opt);
     }
@@ -163,7 +170,9 @@ function initInterfaceCore() {
   const brandSidebar = document.getElementById("sidebarBrandHome");
   if (brandSidebar) {
     brandSidebar.addEventListener("click", () => {
-      document.querySelectorAll(".sidebar-item").forEach((i) => i.classList.remove("active"));
+      document
+        .querySelectorAll(".sidebar-item")
+        .forEach((i) => i.classList.remove("active"));
       switchView("home-view");
     });
   }
@@ -171,7 +180,9 @@ function initInterfaceCore() {
   const brandMobile = document.getElementById("mobileBrandHome");
   if (brandMobile) {
     brandMobile.addEventListener("click", () => {
-      document.querySelectorAll(".sidebar-item").forEach((i) => i.classList.remove("active"));
+      document
+        .querySelectorAll(".sidebar-item")
+        .forEach((i) => i.classList.remove("active"));
       switchView("home-view");
       closeMobileSidebar();
     });
@@ -180,7 +191,9 @@ function initInterfaceCore() {
   // Sidebar nav items
   document.querySelectorAll(".sidebar-item").forEach((item) => {
     item.addEventListener("click", (e) => {
-      document.querySelectorAll(".sidebar-item").forEach((i) => i.classList.remove("active"));
+      document
+        .querySelectorAll(".sidebar-item")
+        .forEach((i) => i.classList.remove("active"));
       e.currentTarget.classList.add("active");
 
       const targetView = e.currentTarget.getAttribute("data-view");
@@ -201,7 +214,9 @@ function initInterfaceCore() {
     document.getElementById("sidebarOverlay").classList.add("active");
   });
 
-  document.getElementById("sidebarOverlay").addEventListener("click", closeMobileSidebar);
+  document
+    .getElementById("sidebarOverlay")
+    .addEventListener("click", closeMobileSidebar);
 
   // Theme toggle
   const themeBtnSidebar = document.getElementById("themeToggleSidebar");
@@ -225,18 +240,24 @@ function initInterfaceCore() {
     settingsForm.addEventListener("submit", handleSettingsSave);
   }
 
-  document.getElementById("instructorRegForm").addEventListener("submit", handleInstructorReg);
+  document
+    .getElementById("instructorRegForm")
+    .addEventListener("submit", handleInstructorReg);
 
-  document.getElementById("batchLimitSelect").addEventListener("change", (e) => {
-    state.batchTarget = parseInt(e.target.value);
-    state.batchCount = 0;
-    updateBatchUI();
-  });
+  document
+    .getElementById("batchLimitSelect")
+    .addEventListener("change", (e) => {
+      state.batchTarget = parseInt(e.target.value);
+      state.batchCount = 0;
+      updateBatchUI();
+    });
 
-  document.getElementById("attendanceInstructorSelect").addEventListener("change", (e) => {
-    state.currentAttendanceInstructor = e.target.value;
-    renderAttendanceMatrix();
-  });
+  document
+    .getElementById("attendanceInstructorSelect")
+    .addEventListener("change", (e) => {
+      state.currentAttendanceInstructor = e.target.value;
+      renderAttendanceMatrix();
+    });
 
   // Mark all present
   const btnMarkAll = document.getElementById("btnMarkAllPresent");
@@ -260,7 +281,9 @@ function initInterfaceCore() {
     });
   }
 
-  document.getElementById("btnDownloadPdf").addEventListener("click", executePdfGeneration);
+  document
+    .getElementById("btnDownloadPdf")
+    .addEventListener("click", executePdfGeneration);
 
   const btnDownloadWarning = document.getElementById("btnDownloadWarningPdf");
   if (btnDownloadWarning) {
@@ -270,8 +293,12 @@ function initInterfaceCore() {
   const btnGoToWarning = document.getElementById("btnGoToWarningReport");
   if (btnGoToWarning) {
     btnGoToWarning.addEventListener("click", () => {
-      document.querySelectorAll(".sidebar-item").forEach((i) => i.classList.remove("active"));
-      const warningSidebarItem = document.querySelector('.sidebar-item[data-view="warning-report-view"]');
+      document
+        .querySelectorAll(".sidebar-item")
+        .forEach((i) => i.classList.remove("active"));
+      const warningSidebarItem = document.querySelector(
+        '.sidebar-item[data-view="warning-report-view"]',
+      );
       if (warningSidebarItem) warningSidebarItem.classList.add("active");
       switchView("warning-report-view");
     });
@@ -290,8 +317,12 @@ function initInterfaceCore() {
   }
 
   // Action dropdown
-  document.getElementById("btnDropdownDelete").addEventListener("click", executeContextDeletion);
-  document.getElementById("btnDropdownUpdate").addEventListener("click", triggerContextUpdate);
+  document
+    .getElementById("btnDropdownDelete")
+    .addEventListener("click", executeContextDeletion);
+  document
+    .getElementById("btnDropdownUpdate")
+    .addEventListener("click", triggerContextUpdate);
 }
 
 function closeMobileSidebar() {
@@ -300,7 +331,9 @@ function closeMobileSidebar() {
 }
 
 function switchView(viewId) {
-  document.querySelectorAll(".app-view").forEach((v) => v.classList.remove("active"));
+  document
+    .querySelectorAll(".app-view")
+    .forEach((v) => v.classList.remove("active"));
   const activeView = document.getElementById(viewId);
   if (activeView) activeView.classList.add("active");
 
@@ -372,7 +405,10 @@ function populatePreviewFilterDropdown() {
     filterSelect.appendChild(opt);
   });
 
-  if (savedVal && (savedVal === "all" || state.instructors.find((i) => i.id === savedVal))) {
+  if (
+    savedVal &&
+    (savedVal === "all" || state.instructors.find((i) => i.id === savedVal))
+  ) {
     filterSelect.value = savedVal;
   } else {
     filterSelect.value = "all";
@@ -411,7 +447,10 @@ function populateStudentFilterDropdown() {
     filterSelect.appendChild(opt);
   });
 
-  if (savedVal && (savedVal === "all" || state.instructors.find((i) => i.id === savedVal))) {
+  if (
+    savedVal &&
+    (savedVal === "all" || state.instructors.find((i) => i.id === savedVal))
+  ) {
     filterSelect.value = savedVal;
   } else {
     filterSelect.value = "all";
