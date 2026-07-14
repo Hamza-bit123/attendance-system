@@ -1143,7 +1143,7 @@ h2 {
 
 .pdf-exporting .pdf-page-wrapper.landscape-page {
     width: 297mm !important;
-    height: 210mm !important;
+    height: 208mm !important;
     padding: 8mm 10mm !important;
     page-break-after: always !important;
     break-after: always !important;
@@ -1960,14 +1960,21 @@ h2 {
     background-color: var(--bg-main) !important;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 32px 24px;
+    padding: 20px;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    overflow-x: auto;
+    overflow-x: auto !important;
     width: 100%;
+}
+
+/* for small screens starting from tablet */
+@media (max-width: 768px) {
+    .pdf-preview-container {
+        align-items: flex-start;
+    }
 }
 
 .pdf-report-inner {
